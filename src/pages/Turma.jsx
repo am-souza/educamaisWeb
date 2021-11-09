@@ -109,7 +109,7 @@ export const EditTurma = withRouter((props) => {
 						<DataTable paginator rows={10} value={turma.alunos}>
 							<Column header="Nome" field="nome"/>
 							<Column header="E-mail" field="email"/>
-							<Column header="Remover" body={a => <Button icon="pi pi-times" onClick={() => {
+							<Column style={{textAlign: "center", width: "6em"}} header="Remover" body={a => <Button icon="pi pi-times" onClick={() => {
 								setTurma({...turma, alunos: turma.alunos.filter(u => u.id !== a.id)});
 							}}/>}/>
 						</DataTable>

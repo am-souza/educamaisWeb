@@ -92,13 +92,13 @@ export const EditQuestao = withRouter((props) => {
 								setQuestao({...questao});
 							}}/>
 						)}/>
-						<Column header="Correta?" body={r => (
+						<Column style={{textAlign: "center", width: "6em"}} header="Correta?" body={r => (
 							<Checkbox checked={r.correta} onChange={() => {
 								questao.escolhas.filter(q => byKeyOrId(q, r)).forEach(r => r.correta = !r.correta);
 								setQuestao({...questao});
 							}}/>
 						)}/>
-						<Column header="Excluir" body={r => (
+						<Column style={{textAlign: "center", width: "6em"}} header="Excluir" body={r => (
 							<Button icon="pi pi-trash" className="p-button-danger" onClick={() => setQuestao({...questao, escolhas: questao.escolhas.filter(e => e.id !== r.id)})}/>
 						)}/>
 					</DataTable>
