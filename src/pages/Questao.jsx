@@ -98,8 +98,8 @@ export const EditQuestao = withRouter((props) => {
 								setQuestao({...questao});
 							}}/>
 						)}/>
-						<Column header="Remover" body={r => (
-							<Button icon="pi pi-times" onClick={() => setQuestao({...questao, escolhas: questao.escolhas.filter(e => e.id !== r.id)})}/>
+						<Column header="Excluir" body={r => (
+							<Button icon="pi pi-trash" className="p-button-danger" onClick={() => setQuestao({...questao, escolhas: questao.escolhas.filter(e => e.id !== r.id)})}/>
 						)}/>
 					</DataTable>
 				</div>
@@ -107,7 +107,7 @@ export const EditQuestao = withRouter((props) => {
 			<PanelFooter>
 				<Button label="Salvar" icon="pi pi-fw pi-save" className="p-button-success" onClick={handleSalvar}/>
 				<Button label="Voltar" icon="pi pi-fw pi-undo" className="p-button-secondary" onClick={handleVoltar}/>
-				<Button label="Delete" icon="pi pi-fw pi-trash" className="p-button-danger" onClick={handleExcluir}/>
+				<Button label="Excluir" icon="pi pi-fw pi-trash" className="p-button-danger" onClick={handleExcluir}/>
 			</PanelFooter>
 		</Panel>
 	);
