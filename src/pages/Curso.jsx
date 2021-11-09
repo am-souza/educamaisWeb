@@ -60,7 +60,7 @@ export const EditCurso = withRouter((props) => {
 	return (
 		<Panel header="Curso">
 			<PanelContent>
-				<InputText width={8} label="Nome" value={curso.nome} onChange={e => setCurso({...curso, nome: e.target.value})}/>
+				<InputText width={12} label="Nome" value={curso.nome} onChange={e => setCurso({...curso, nome: e.target.value})}/>
 			</PanelContent>
 			<PanelFooter>
 				<Button label="Salvar" icon="pi pi-fw pi-save" className="p-button-success" onClick={handleSalvar}/>
