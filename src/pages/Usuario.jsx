@@ -79,11 +79,11 @@ export const EditUsuario = withRouter((props) => {
 	return (
 		<Panel header="Usuário">
 			<PanelContent>
-				<InputText width={12} label="Login" value={usuario.username} onChange={e => setUsuario({...usuario, username: e.target.value})}/>
+				<InputText width={6} label="Login" value={usuario.username} onChange={e => setUsuario({...usuario, username: e.target.value})}/>
+				<InputText type="password" width={6} label="Senha" value={usuario.password} onChange={e => setUsuario({...usuario, password: e.target.value})}/>
 				<InputText width={12} label="Nome" value={usuario.nome} onChange={e => setUsuario({...usuario, nome: e.target.value})}/>
-				<InputText width={12} label="Email" value={usuario.email} onChange={e => setUsuario({...usuario, email: e.target.value})}/>
-				<InputText type="password" width={12} label="Password" value={usuario.password} onChange={e => setUsuario({...usuario, password: e.target.value})}/>
-				<Dropdown options={Usuario_Perfil} label="Perfil" width={12} value={usuario.perfil} onChange={e => setUsuario({...usuario, perfil: e.value})}/>
+				<InputText width={8} label="Email" value={usuario.email} onChange={e => setUsuario({...usuario, email: e.target.value})}/>
+				<Dropdown options={Usuario_Perfil} label="Perfil" width={4} value={usuario.perfil} onChange={e => setUsuario({...usuario, perfil: e.value})}/>
 			</PanelContent>
 			<PanelFooter>
 				<Button label="Salvar" icon="pi pi-fw pi-save" className="p-button-success" onClick={handleSalvar}/>
