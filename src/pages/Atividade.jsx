@@ -38,7 +38,7 @@ export const PageAtividade = withRouter((props) => {
 	}
 	return (
 		<div>
-			<Panel header="Avaliações">
+			<Panel header="Atividades">
 				<PanelContent>
 					<InputText label="ID" width={6} value={params.identif} onChange={e => setParams({...params, identif: e.target.value})}/>					
 				</PanelContent>

@@ -64,7 +64,7 @@ export const EditAvaliacao = withRouter((props) => {
 	const handleSalvar = () => salvar("/avaliacoes", avaliacao).then(handleVoltar);
 	const handleExcluir = () => excluir("/avaliacoes").then(handleVoltar);
 	return (
-		<Panel header="Avaliacao">
+		<Panel header="Avaliação">
 			<PanelContent>
 				<InputText width={12} label="Avaliacao" value={avaliacao.texto} onChange={e => setAvaliacao({...avaliacao, texto: e.target.value})}/>
 			</PanelContent>
