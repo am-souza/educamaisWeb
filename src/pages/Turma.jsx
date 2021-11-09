@@ -74,7 +74,7 @@ export const EditTurma = withRouter((props) => {
 	const [tutores, setTutores] = useState([]);	
 	const [materias, setMaterias] = useState([]);
 	const [alunos, setAlunos] = useState([]);
-	useEffect(() => id !== "0" && buscar(`/turmas/${id}`).then(json).then(setTurma), [id]);
+	useEffect(() => id !== "0" && buscar(`/turmas/${id}`).then(json).then((turma) => setTurma(turma)), [id]);
 	const handleVoltar = () => props.history.push("/turmas");
 	const handleSalvar = () => salvar("/turmas", turma).then(handleVoltar);
 	const handleExcluir = () => excluir(`/turmas/${turma.id}`).then(handleVoltar);
