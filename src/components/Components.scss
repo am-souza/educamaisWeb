@@ -24,3 +24,18 @@
 		width: 100%;
 	}
 }
+
+.p-autocomplete {
+	position: relative;
+	input {
+		padding-left: 2.5em;
+	}
+	&::after {
+		content: "\e908";
+		font-family: "PrimeIcons", sans-serif;
+		position: absolute;
+		color: #222222;
+		top: 12px;
+		left: 12px;
+	}
+}
