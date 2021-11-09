@@ -6,7 +6,7 @@ import { Route, Switch, withRouter } from "react-router-dom";
 import { PageHome } from "./Home";
 import { EditUsuario, PageUsuario } from "./Usuario";
 import { EditQuestao, PageQuestao } from "./Questao";
-import { PageAtividade } from "./Atividade";
+import {EditAtividade, PageAtividade} from "./Atividade";
 import { PageAvaliacao } from "./Avaliacao";
 import { EditTurma, PageTurma } from "./Turma";
 import { Spacer } from "../components/Spacer";
@@ -26,6 +26,7 @@ export const PageMain = withUser(withRouter(((props) => {
 				<Route exact path="/questoes" component={PageQuestao}/>
 				<Route exact path="/questoes/:id" component={EditQuestao}/>
 				<Route exact path="/atividades" component={PageAtividade}/>
+				<Route exact path="/atividades:id" component={EditAtividade}/>
 				<Route exact path="/avaliacoes" component={PageAvaliacao}/>
 				<Route exact path="/turmas" component={PageTurma}/>
 				<Route exact path="/turmas/:id" component={EditTurma}/>

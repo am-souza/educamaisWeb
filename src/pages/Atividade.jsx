@@ -1,32 +1,40 @@
-import { Panel } from "primereact/panel";
-import { DataTable } from "primereact/datatable";
-import React, { useEffect, useState } from "react";
-import { Column } from "primereact/column";
-import { Spacer } from "../components/Spacer";
-import { buscar, json, salvar, excluir } from "../utilidades/Fetch";
-import { InputText } from "../components/InputText";
-import { PanelContent } from "../components/PanelContent";
-import { useParams, withRouter, Route } from "react-router";
-import { Button } from "primereact/button";
-import { PanelFooter } from "../components/PanelFooter";
-import { Dropdown } from "../components/Dropdown";
+import {Panel} from "primereact/panel";
+import {DataTable} from "primereact/datatable";
+import React, {useEffect, useState} from "react";
+import {Column} from "primereact/column";
+import {Spacer} from "../components/Spacer";
+import {buscar, excluir, json, salvar} from "../utilidades/Fetch";
+import {InputText} from "../components/InputText";
+import {PanelContent} from "../components/PanelContent";
+import {useParams, withRouter} from "react-router-dom";
+import {Button} from "primereact/button";
+import {PanelFooter} from "../components/PanelFooter";
 
+function newAtividade() {
+	return {
+		_key: Math.random(),
+		id: null,
+		dtInicio: null,
+		dtFim: null,
+		nome: "",
+		questoes: []
+	};
+}
 
 export const PageAtividade = withRouter((props) => {
-	const [questoes, setQuestoes] = useState([]);
+	const [atividades, setAtividades] = useState([]);
 	const [params, setParams] = useState({
-		identif: "",
 		texto: "",		
 	});
 
 	function handleNew() {
-		props.history.push("/questoes/0");
+		props.history.push("/atividades/0");
 	}
 	function handleList() {
 		const query = [];
 		if (params.identif?.length) query.push(`id=ik=${params.identif}`);
 		if (params.texto?.length) query.push(`texto==${params.texto}`);
-		buscar(`/questoes?${query.join(";")}`).then(json).then(setQuestoes);
+		buscar(`/atividades?${query.join(";")}`).then(json).then(setAtividades);
 	}
 	return (
 		<div>
@@ -40,7 +48,7 @@ export const PageAtividade = withRouter((props) => {
 				</PanelFooter>
 			</Panel>
 			<Spacer/>
-			<DataTable emptyMessage="Nenhum registro encontrado" value={questoes} onRowDoubleClick={e => props.history.push(`/questoes/${questoes[e.index].id}`)}>
+			<DataTable emptyMessage="Nenhum registro encontrado" value={atividades} onRowDoubleClick={e => props.history.push(`/atividades/${atividades[e.index].id}`)}>
 				<Column header="ID" field="ID"/>
 				<Column header="Texto" field="texto"/>				
 			</DataTable>
@@ -48,20 +56,17 @@ export const PageAtividade = withRouter((props) => {
 	);
 });
 
-export const EditQuestao = withRouter((props) => {
+export const EditAtividade = withRouter((props) => {
 	const { id } = useParams();
-	const [questao, setQuestao] = useState({
-		identif: "",
-		texto: "",
-	});
-	useEffect(() => id !== "0" && buscar(`/questoes/${id}`).then(json).then(setQuestao), [id]);
-	const handleVoltar = () => props.history.push("/questoes");
-	const handleSalvar = () => salvar("/questoes", questao).then(handleVoltar);
-	const handleExcluir = () => excluir("/questoes").then(handleVoltar);
+	const [atividade, setAtividade] = useState(newAtividade());
+	useEffect(() => id !== "0" && buscar(`/atividades/${id}`).then(json).then(setAtividade), [id]);
+	const handleVoltar = () => props.history.push("/atividades");
+	const handleSalvar = () => salvar("/atividades", atividade).then(handleVoltar);
+	const handleExcluir = () => excluir(`/atividades/${atividade.id}`).then(handleVoltar);
 	return (
-		<Panel header="Questao">
+		<Panel header="Atividade">
 			<PanelContent>
-				<InputText width={12} label="Questao" value={questao.texto} onChange={e => setQuestao({...questao, texto: e.target.value})}/>
+				<InputText width={12} label="Atividade" value={atividade.texto} onChange={e => setAtividade({...atividade, texto: e.target.value})}/>
 			</PanelContent>
 			<PanelFooter>
 				<Button label="Salvar" icon="pi pi-fw pi-save" className="p-button-success" onClick={handleSalvar}/>
@@ -71,5 +76,3 @@ export const EditQuestao = withRouter((props) => {
 		</Panel>
 	);
 });
-
-

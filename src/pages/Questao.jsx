@@ -6,7 +6,7 @@ import {Spacer} from "../components/Spacer";
 import {buscar, excluir, json, salvar} from "../utilidades/Fetch";
 import {InputText} from "../components/InputText";
 import {PanelContent} from "../components/PanelContent";
-import {useParams, withRouter} from "react-router";
+import {useParams, withRouter} from "react-router-dom";
 import {Button} from "primereact/button";
 import {PanelFooter} from "../components/PanelFooter";
 import {Checkbox} from "primereact/checkbox";

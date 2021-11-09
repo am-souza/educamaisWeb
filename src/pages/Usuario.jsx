@@ -1,17 +1,15 @@
-import { Panel } from "primereact/panel";
-import { DataTable } from "primereact/datatable";
-import React, { useEffect, useState } from "react";
-import { Column } from "primereact/column/column.cjs";
-import { Spacer } from "../components/Spacer";
-import { buscar, json, salvar, excluir } from "../utilidades/Fetch";
-import { InputText } from "../components/InputText";
-import { PanelContent } from "../components/PanelContent";
-import { useParams, withRouter } from "react-router";
-import { Button } from "primereact/button";
-import { PanelFooter } from "../components/PanelFooter";
-import { Dropdown } from "../components/Dropdown";
-import { AutoComplete } from "../components/AutoComplete";
-
+import {Panel} from "primereact/panel";
+import {DataTable} from "primereact/datatable";
+import React, {useEffect, useState} from "react";
+import {Column} from "primereact/column/column.cjs";
+import {Spacer} from "../components/Spacer";
+import {buscar, excluir, json, salvar} from "../utilidades/Fetch";
+import {InputText} from "../components/InputText";
+import {PanelContent} from "../components/PanelContent";
+import {useParams, withRouter} from "react-router-dom";
+import {Button} from "primereact/button";
+import {PanelFooter} from "../components/PanelFooter";
+import {Dropdown} from "../components/Dropdown";
 
 const Usuario_Perfil = [
 	{label: "Nenhum", value: null},
@@ -19,6 +17,15 @@ const Usuario_Perfil = [
 	"TUTOR",
 	"ALUNO"
 ];
+
+function newUsuario() {
+	return {
+		username: "",
+		nome: "",
+		email: "",
+		perfil: null
+	};
+}
 
 export const PageUsuario = withRouter((props) => {
 	const [usuarios, setUsuarios] = useState([]);
@@ -28,7 +35,6 @@ export const PageUsuario = withRouter((props) => {
 		email: "",
 		perfil: null
 	});
-		
 	function handleNew() {
 		props.history.push("/usuarios/0");
 	}
@@ -63,14 +69,9 @@ export const PageUsuario = withRouter((props) => {
 	);
 });
 
-
-
 export const EditUsuario = withRouter((props) => {
 	const { id } = useParams();
-	const [usuario, setUsuario] = useState({
-		username: "",
-		perfil: "ALUNO"
-	});
+	const [usuario, setUsuario] = useState(newUsuario());
 	useEffect(() => id !== "0" && buscar(`/usuarios/${id}`).then(json).then(setUsuario), [id]);
 	const handleVoltar = () => props.history.push("/usuarios");
 	const handleSalvar = () => salvar("/usuarios", usuario).then(handleVoltar);
