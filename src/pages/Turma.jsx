@@ -10,11 +10,10 @@ import {useParams, withRouter} from "react-router-dom";
 import {Button} from "primereact/button";
 import {PanelFooter} from "../components/PanelFooter";
 import {AutoComplete} from "../components/AutoComplete";
-import {Fieldset} from 'primereact/fieldset';
 import {Dropdown} from "../components/Dropdown";
 import {InputNumber} from "../components/InputNumber";
-import {InputMask} from "../components/InputMask";
 import {Calendar} from "../components/Calendar";
+import {TabPanel, TabView} from "primereact/tabview";
 
 const Turma_Periodo = [
 	{label: "Nenhum", value: null},
@@ -85,40 +84,43 @@ export const EditTurma = withRouter((props) => {
 	const handleAutoCompleteAluno = (e) => buscar(`/usuarios?perfil==ALUNO;nome=ik=${e.query}`).then(json).then(setAlunos);
 	return (
 		<Panel header="Turma">
-			<Fieldset legend="Configuração geral" toggleable>
-				<PanelContent>
-					<InputText width={6} label="Nome" value={turma.nome} onChange={e => setTurma({...turma, nome: e.target.value})}/>
-					<InputNumber label="Número" width={2} value={turma.numeroTurma} onValueChange={e => setTurma({...turma, numeroTurma: e.target.value})}/>
-					<Dropdown label="Período" width={4} options={Turma_Periodo} value={turma.periodo} onChange={e => setTurma({...turma, periodo: e.value})}/>
-					<AutoComplete width={8} field="nome" suggestions={materias} completeMethod={handleAutoCompleteMateria} label="Matéria" value={turma.materia} onChange={e => setTurma({...turma, materia: e.value})}/>
-					<Calendar width={4} label="Data" value={turma.data} onChange={e => setTurma({...turma, data: e.value})}/>
-					<AutoComplete width={12} field="nome" suggestions={tutores} completeMethod={handleAutoCompleteTutor} label="Tutor" value={turma.tutor} onChange={e => setTurma({...turma, tutor: e.value})}/>
-				</PanelContent>
-			</Fieldset>
-			<div style={{height: "1em"}}/>
-			<Fieldset legend="Alunos" toggleable>
-				<AutoComplete width={12}
-				              field="nome"
-				              suggestions={alunos}
-				              completeMethod={handleAutoCompleteAluno}
-				              label="Aluno"
-				              value={turma.aluno}
-				              onChange={e => setTurma({...turma, aluno: e.value})}
-				              onSelect={e => setTurma({...turma, aluno: "", alunos: [...turma.alunos, e.value]})}
-				/>
-				<DataTable value={turma.alunos}>
-					<Column header="Nome" field="nome"/>
-					<Column header="E-mail" field="email"/>
-					<Column header="Remover" body={a => <Button icon="pi pi-times" onClick={() => {
-						setTurma({...turma, alunos: turma.alunos.filter(u => u.id !== a.id)});
-					}}/>}/>
-				</DataTable>
-				<PanelFooter>
-					<Button label="Voltar" icon="pi pi-fw pi-undo" className="p-button-secondary" onClick={handleVoltar}/>
-					<Button label="Salvar" icon="pi pi-fw pi-save" className="p-button-success" onClick={handleSalvar}/>					
-					<Button label="Delete" icon="pi pi-fw pi-trash" className="p-button-danger" onClick={handleExcluir}/>
-				</PanelFooter>
-			</Fieldset>
+			<TabView>
+				<TabPanel header="Configuração Geral">
+					<PanelContent>
+						<InputText width={6} label="Nome" value={turma.nome} onChange={e => setTurma({...turma, nome: e.target.value})}/>
+						<InputNumber label="Número" width={2} value={turma.numeroTurma} onValueChange={e => setTurma({...turma, numeroTurma: e.target.value})}/>
+						<Dropdown label="Período" width={4} options={Turma_Periodo} value={turma.periodo} onChange={e => setTurma({...turma, periodo: e.value})}/>
+						<AutoComplete width={8} field="nome" suggestions={materias} completeMethod={handleAutoCompleteMateria} label="Matéria" value={turma.materia} onChange={e => setTurma({...turma, materia: e.value})}/>
+						<Calendar width={4} label="Data" value={turma.data} onChange={e => setTurma({...turma, data: e.value})}/>
+						<AutoComplete width={12} field="nome" suggestions={tutores} completeMethod={handleAutoCompleteTutor} label="Tutor" value={turma.tutor} onChange={e => setTurma({...turma, tutor: e.value})}/>
+					</PanelContent>
+				</TabPanel>
+				<TabPanel header="Alunos">
+					<AutoComplete width={12}
+					              field="nome"
+					              suggestions={alunos}
+					              completeMethod={handleAutoCompleteAluno}
+					              label="Aluno"
+					              value={turma.aluno}
+					              onChange={e => setTurma({...turma, aluno: e.value})}
+					              onSelect={e => setTurma({...turma, aluno: "", alunos: [...turma.alunos, e.value]})}
+					/>
+					<div className="p-col-12">
+						<DataTable paginator rows={10} value={turma.alunos}>
+							<Column header="Nome" field="nome"/>
+							<Column header="E-mail" field="email"/>
+							<Column header="Remover" body={a => <Button icon="pi pi-times" onClick={() => {
+								setTurma({...turma, alunos: turma.alunos.filter(u => u.id !== a.id)});
+							}}/>}/>
+						</DataTable>
+					</div>
+				</TabPanel>
+			</TabView>
+			<PanelFooter>
+				<Button label="Voltar" icon="pi pi-fw pi-undo" className="p-button-secondary" onClick={handleVoltar}/>
+				<Button label="Salvar" icon="pi pi-fw pi-save" className="p-button-success" onClick={handleSalvar}/>
+				<Button label="Delete" icon="pi pi-fw pi-trash" className="p-button-danger" onClick={handleExcluir}/>
+			</PanelFooter>
 		</Panel>
 	);
 });

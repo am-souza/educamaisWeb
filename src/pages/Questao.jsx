@@ -82,25 +82,27 @@ export const EditQuestao = withRouter((props) => {
 			<PanelContent>
 				<InputText width={12} label="Pergunta" value={questao.texto} onChange={e => setQuestao({...questao, texto: e.target.value})}/>
 				<AutoComplete width={12} field="nome" suggestions={materias} completeMethod={handleAutoCompleteMateria} label="Matéria" value={questao.materia} onChange={e => setQuestao({...questao, materia: e.value})}/>
-				<DataTable rows={5} value={questao.escolhas} paginator paginatorLeft={
-					<Button icon="pi pi-plus" onClick={() => setQuestao({...questao, escolhas: [...questao.escolhas, newQuestaoEscolha()]})}/>
-				}>
-					<Column header="Resposta" body={r => (
-						<InputText value={r.texto} onChange={e => {
-							questao.escolhas.filter(q => byKeyOrId(q, r)).forEach(r => r.texto = e.target.value);
-							setQuestao({...questao});
-						}}/>
-					)}/>
-					<Column header="Correta?" body={r => (
-						<Checkbox checked={r.correta} onChange={() => {
-							questao.escolhas.filter(q => byKeyOrId(q, r)).forEach(r => r.correta = !r.correta);
-							setQuestao({...questao});
-						}}/>
-					)}/>
-					<Column header="Remover" body={r => (
-						<Button icon="pi pi-times" onClick={() => setQuestao({...questao, escolhas: questao.escolhas.filter(e => e.id !== r.id)})}/>
-					)}/>
-				</DataTable>
+				<div className="p-col-12">
+					<DataTable rows={5} value={questao.escolhas} paginator paginatorLeft={
+						<Button icon="pi pi-plus" onClick={() => setQuestao({...questao, escolhas: [...questao.escolhas, newQuestaoEscolha()]})}/>
+					}>
+						<Column header="Resposta" body={r => (
+							<InputText value={r.texto} onChange={e => {
+								questao.escolhas.filter(q => byKeyOrId(q, r)).forEach(r => r.texto = e.target.value);
+								setQuestao({...questao});
+							}}/>
+						)}/>
+						<Column header="Correta?" body={r => (
+							<Checkbox checked={r.correta} onChange={() => {
+								questao.escolhas.filter(q => byKeyOrId(q, r)).forEach(r => r.correta = !r.correta);
+								setQuestao({...questao});
+							}}/>
+						)}/>
+						<Column header="Remover" body={r => (
+							<Button icon="pi pi-times" onClick={() => setQuestao({...questao, escolhas: questao.escolhas.filter(e => e.id !== r.id)})}/>
+						)}/>
+					</DataTable>
+				</div>
 			</PanelContent>
 			<PanelFooter>
 				<Button label="Salvar" icon="pi pi-fw pi-save" className="p-button-success" onClick={handleSalvar}/>
