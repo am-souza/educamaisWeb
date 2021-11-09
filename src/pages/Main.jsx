@@ -5,11 +5,14 @@ import { handleLogout, handleMenu, withUser } from "../utilidades/Auth";
 import { Route, Switch, withRouter } from "react-router-dom";
 import { PageHome } from "./Home";
 import { EditUsuario, PageUsuario } from "./Usuario";
-import { PageQuestao } from "./Questao";
+import { EditQuestao, PageQuestao } from "./Questao";
 import { PageAtividade } from "./Atividade";
 import { PageAvaliacao } from "./Avaliacao";
-import { PageTurma } from "./Turma";
+import { EditTurma, PageTurma } from "./Turma";
 import { Spacer } from "../components/Spacer";
+import { EditRespostas, PageRespostas } from "./Respostas";
+import { EditMateria, PageMateria } from "./Materia";
+import { EditCurso, PageCurso } from "./Curso";
 
 export const PageMain = withUser(withRouter(((props) => {
 	return (
@@ -21,9 +24,17 @@ export const PageMain = withUser(withRouter(((props) => {
 				<Route exact path="/usuarios" component={PageUsuario}/>
 				<Route exact path="/usuarios/:id" component={EditUsuario}/>
 				<Route exact path="/questoes" component={PageQuestao}/>
+				<Route exact path="/questoes/:id" component={EditQuestao}/>
 				<Route exact path="/atividades" component={PageAtividade}/>
 				<Route exact path="/avaliacoes" component={PageAvaliacao}/>
 				<Route exact path="/turmas" component={PageTurma}/>
+				<Route exact path="/turmas/:id" component={EditTurma}/>
+				<Route exact path="/respostas" component={PageRespostas}/>
+				<Route exact path="/respostas/:id" component={EditRespostas}/>
+				<Route exact path="/materias" component={PageMateria}/>
+				<Route exact path="/materias/:id" component={EditMateria}/>
+				<Route exact path="/cursos" component={PageCurso}/>
+				<Route exact path="/cursos/:id" component={EditCurso}/>
 			</Switch>
 		</div>
 	);
