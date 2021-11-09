@@ -1,6 +1,7 @@
 import React from "react";
 import { buscar } from "./Fetch";
 import { byLabel } from "./SortUtils";
+import { Avatar } from 'primereact/avatar';
 
 export function handleLogin(login, callback) {
 	window.localStorage.setItem("X-Auth-Credentials", `Basic ${btoa(`${login.username}:${login.password}`)}`);
@@ -39,8 +40,7 @@ export function handleMenu(props) {
 			break;
 	}
 	return [
-		{label: "Cadastro", icon: "pi pi-fw pi-pencil", items: cadastros.sort(byLabel)}
-	];
+		{label: "Cadastro", icon: "pi pi-fw pi-pencil", items: cadastros.sort(byLabel),}];
 }
 
 const UserContext = React.createContext();
@@ -50,7 +50,7 @@ export const UserProvider = UserContext.Provider;
 export const withUser = Component => props => {
 	return (
 		<UserContext.Consumer>
-			{usuario => <Component {...props} usuario={usuario}/>}
-		</UserContext.Consumer>
+			{usuario => <Component {...props} usuario={usuario}/>}			
+		</UserContext.Consumer>				
 	);
 }

@@ -83,6 +83,8 @@ export const EditUsuario = withRouter((props) => {
 				<InputText type="password" width={6} label="Senha" value={usuario.password} onChange={e => setUsuario({...usuario, password: e.target.value})}/>
 				<InputText width={12} label="Nome" value={usuario.nome} onChange={e => setUsuario({...usuario, nome: e.target.value})}/>
 				<InputText width={8} label="Email" value={usuario.email} onChange={e => setUsuario({...usuario, email: e.target.value})}/>
+				<InputText width={8} label="XP" value={usuario.xp} onChange={e => setUsuario({...usuario, xp: e.target.value})}/>
+				<InputText width={8} label="CASH" value={usuario.cash} onChange={e => setUsuario({...usuario, cash: e.target.value})}/>
 				<Dropdown options={Usuario_Perfil} label="Perfil" width={4} value={usuario.perfil} onChange={e => setUsuario({...usuario, perfil: e.value})}/>
 			</PanelContent>
 			<PanelFooter>
