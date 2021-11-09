@@ -14,6 +14,7 @@ import {Fieldset} from 'primereact/fieldset';
 import {Dropdown} from "../components/Dropdown";
 import {InputNumber} from "../components/InputNumber";
 import {InputMask} from "../components/InputMask";
+import {Calendar} from "../components/Calendar";
 
 const Turma_Periodo = [
 	{label: "Nenhum", value: null},
@@ -89,7 +90,7 @@ export const EditTurma = withRouter((props) => {
 					<InputNumber label="Número" width={2} value={turma.numeroTurma} onValueChange={e => setTurma({...turma, numeroTurma: e.target.value})}/>
 					<Dropdown label="Período" width={4} options={Turma_Periodo} value={turma.periodo} onChange={e => setTurma({...turma, periodo: e.value})}/>
 					<AutoComplete width={8} field="nome" suggestions={materias} completeMethod={handleAutoCompleteMateria} label="Matéria" value={turma.materia} onChange={e => setTurma({...turma, materia: e.value})}/>
-					<InputMask width={4} label="Data (Ano-Mês-Dia)" className="p-d-block" mask="9999-99-99" value={turma.data} placeholder="yyyy-mm-dd" slotChar="yyyy-mm-dd" onChange={e => setTurma({...turma, data: e.target.value})}/>
+					<Calendar width={4} label="Data" value={turma.data} onChange={e => setTurma({...turma, data: e.value})}/>
 					<AutoComplete width={12} field="nome" suggestions={tutores} completeMethod={handleAutoCompleteTutor} label="Tutor" value={turma.tutor} onChange={e => setTurma({...turma, tutor: e.value})}/>
 				</PanelContent>
 			</Fieldset>
