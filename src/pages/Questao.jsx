@@ -61,6 +61,7 @@ export const PageQuestao = withRouter((props) => {
 			<Spacer/>
 			<DataTable emptyMessage="Nenhum registro encontrado" value={questoes} onRowDoubleClick={e => props.history.push(`/questoes/${questoes[e.index].id}`)}>
 				<Column header="ID" field="id"/>
+				<Column header="Matéria" body={q => q.materia?.nome}/>
 				<Column header="Texto" field="texto"/>				
 			</DataTable>
 		</div>

@@ -56,8 +56,9 @@ export const PageTurma = withRouter((props) => {
 			<DataTable emptyMessage="Nenhum registro encontrado" value={turmas} onRowDoubleClick={e => props.history.push(`/turmas/${turmas[e.index].id}`)}>
 				<Column header="Nome" field="nome"/>
 				<Column header="Período" field="periodo"/>
-				<Column header="Numero" field="numeroTurma"/>				
-				<Column header="Matéria" field="materia.nome"/>								
+				<Column header="Número" field="numeroTurma"/>
+				<Column header="Matéria" body={t => t.materia?.nome}/>
+				<Column header="Tutor" body={t => t.tutor?.nome}/>
 			</DataTable>
 		</div>
 	);

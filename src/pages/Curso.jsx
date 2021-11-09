@@ -42,7 +42,7 @@ export const PageCurso = withRouter((props) => {
 			<Spacer/>
 			<DataTable emptyMessage="Nenhum registro encontrado" value={cursos} onRowDoubleClick={e => props.history.push(`/cursos/${cursos[e.index].id}`)}>
 				<Column header="ID" field="id"/>				
-				<Column header="Cursos" field="nome"/>				
+				<Column header="Nome" field="nome"/>
 			</DataTable>  
 		</div>
 	);
