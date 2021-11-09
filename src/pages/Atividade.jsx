@@ -35,15 +35,16 @@ export const PageAtividade = withRouter((props) => {
 	}
 	function handleList() {
 		const query = [];
-		if (params.identif?.length) query.push(`id=ik=${params.identif}`);
-		if (params.texto?.length) query.push(`texto==${params.texto}`);
+		if (params.id?.length) query.push(`id==${params.id}`);
+		if (params.nome?.length) query.push(`nome=ik=${params.nome}`);
 		buscar(`/atividades?${query.join(";")}`).then(json).then(setAtividades);
 	}
 	return (
 		<div>
 			<Panel header="Atividades">
 				<PanelContent>
-					<InputText label="ID" width={6} value={params.identif} onChange={e => setParams({...params, identif: e.target.value})}/>					
+					<InputText label="ID" width={4} value={params.id} onChange={e => setParams({...params, id: e.target.value})}/>
+					<InputText label="Nome" width={8} value={params.nome} onChange={e => setParams({...params, nome: e.target.value})}/>
 				</PanelContent>
 				<PanelFooter>
 					<Button label="Novo" className="p-button-warning" icon="pi pi-fw pi-plus" onClick={handleNew}/>
@@ -74,8 +75,8 @@ export const EditAtividade = withRouter((props) => {
 				<TabPanel header="Dados Principais">
 					<PanelContent>
 						<InputText width={12} label="Nome" value={atividade.nome} onChange={e => setAtividade({...atividade, nome: e.target.value})}/>
-						<Calendar showTime width={12} label="Início" value={atividade.dtInicio} onChange={e => setAtividade({...atividade, dtInicio: e.value})}/>
-						<Calendar showTime width={12} label="Fim" value={atividade.dtFim} onChange={e => setAtividade({...atividade, dtFim: e.value})}/>
+						<Calendar showTime width={6} label="Início" value={atividade.dtInicio} onChange={e => setAtividade({...atividade, dtInicio: e.value})}/>
+						<Calendar showTime width={6} label="Fim" value={atividade.dtFim} onChange={e => setAtividade({...atividade, dtFim: e.value})}/>
 					</PanelContent>
 				</TabPanel>
 				<TabPanel header="Questões">
