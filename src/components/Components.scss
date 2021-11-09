@@ -1,5 +1,5 @@
 .input-text {
-	input {
+	input, .p-inputnumber {
 		width: 100%;
 	}
 }
@@ -11,6 +11,7 @@
 }
 
 .panel-footer {
+	padding-top: 1em;
 	text-align: right;
 	button {
 		min-width: 150px;

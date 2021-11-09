@@ -10,17 +10,24 @@ import { useParams, withRouter, Route } from "react-router";
 import { Button } from "primereact/button";
 import { PanelFooter } from "../components/PanelFooter";
 import { AutoComplete } from "../components/AutoComplete";
-import { InputNumber } from 'primereact/inputnumber';
-import { InputMask } from 'primereact/inputmask';
 import { Fieldset } from 'primereact/fieldset';
-
-
+import {Dropdown} from "../components/Dropdown";
+import {InputNumber} from "../components/InputNumber";
+import {InputMask} from "../components/InputMask";
 
 const Usuario_Perfil = [
 	{label: "Nenhum", value: null},
 	"ADMINISTRADOR",
 	"TUTOR",
 	"ALUNO"
+];
+
+const Turma_Periodo = [
+	{label: "Nenhum", value: null},
+	{label: "Integral", value: "INTEGRAL"},
+	{label: "Matutino", value: "MATUTINO"},
+	{label: "Vespertino", value: "VESPERTINO"},
+	{label: "Noturno", value: "NOTURNO"}
 ];
 
 export const PageTurma = withRouter((props) => {
@@ -63,12 +70,15 @@ export const PageTurma = withRouter((props) => {
 });
 
 export const EditTurma = withRouter((props) => {
+
 	const { id } = useParams();
+
 	const [turma, setTurma] = useState({
 		nome: "",
-		tutor: "",
-		materia: "",
-		aluno: "",
+		periodo: null,
+		tutor: null,
+		materia: null,
+		alunos: []
 	});
 
 	const [params, setParams] = useState({
@@ -83,7 +93,6 @@ export const EditTurma = withRouter((props) => {
 	const [materias, setMaterias] = useState([]);
 	const [alunos, setAlunos] = useState([]);	
 
-
 	useEffect(() => id !== "0" && buscar(`/turmas/${id}`).then(json).then(setTurma), [id]);
 
 	const handleVoltar = () => props.history.push("/turmas");
@@ -94,7 +103,6 @@ export const EditTurma = withRouter((props) => {
 	const handleAutoCompleteMateria = (e) => buscar(`/materias?nome=ik=${e.query}`).then(json).then(setMaterias);
 	const handleAutoCompleteAluno = (e) => buscar(`/usuarios?perfil==ALUNO;nome=ik=${e.query}`).then(json).then(setAlunos);
 
-	
 	function handleList() {
 		const query = [];
 		if (params.username?.length) query.push(`username=ik=${params.username}`);
@@ -103,71 +111,51 @@ export const EditTurma = withRouter((props) => {
 		buscar(`/usuarios?${query.join(";")}`).then(json).then(setUsuarios);
 	}
 
-
 	function adicionarAluno() {		
 		
 	}
 
 	function removerAluno() {		
-		const query = [];
-		query.push(`perfil==ALUNO`);
-		salvar(`/usuarios?${query.join(";")}`).then(json).then(setAlunos);
+
 	}	
 
 	return (
 		<Panel header="Turma">
 			<Fieldset legend="Configuração geral" toggleable>
-
-				<InputText width={8} label="Nome" value={turma.nome} onChange={e => setTurma({...turma, nome: e.target.value})}/>				
-							
-				<div className="p-field p-col-6 p-md-3">
-					<div className="p-text-left">Período</div>
-					<InputNumber value={turma.periodo} onValueChange={e => setTurma({...turma, periodo: e.target.value})}/>
-				</div>	
-
-				<div className="p-field p-col-6 p-md-3">
-					<div className="p-text-left">Número</div>
-					<InputNumber width={4} value={turma.numeroTurma} onValueChange={e => setTurma({...turma, numeroTurma: e.target.value})}/>
-				</div>
-				
-				<AutoComplete width={12} field="nome" suggestions={materias} completeMethod={handleAutoCompleteMateria} label="Matéria" value={turma.materia} onChange={e => setTurma({...turma, materia: e.value})}/>				
-				<AutoComplete width={12} field="nome" suggestions={tutores} completeMethod={handleAutoCompleteTutor} label="Tutor" value={turma.tutor} onChange={e => setTurma({...turma, tutor: e.value})}/>
-				
-				<div className="p-field p-col-12 p-md-3">
-					<div className="p-text-left">Data (Ano-Mês-Dia)</div>					
-					<InputMask className="p-d-block"  label="Data" mask="9999-99-99" value={turma.data} placeholder="yyyy-mm-dd" slotChar="yyyy-mm-dd" onChange={e => setTurma({...turma, data: e.target.value})}></InputMask>
-				</div>
-
-				<PanelFooter>
-					<Button label="Salvar" icon="pi pi-fw pi-save" className="p-button-success" onClick={handleSalvar}/>
-					<Button label="Voltar" icon="pi pi-fw pi-undo" className="p-button-secondary" onClick={handleVoltar}/>
-					<Button label="Delete" icon="pi pi-fw pi-trash" className="p-button-danger" onClick={handleExcluir}/>
-				</PanelFooter>
-
+				<PanelContent>
+					<InputText width={6} label="Nome" value={turma.nome} onChange={e => setTurma({...turma, nome: e.target.value})}/>
+					<InputNumber label="Número" width={2} value={turma.numeroTurma} onValueChange={e => setTurma({...turma, numeroTurma: e.target.value})}/>
+					<Dropdown label="Período" width={4} options={Turma_Periodo} value={turma.periodo} onChange={e => setTurma({...turma, periodo: e.value})}/>
+					<AutoComplete width={8} field="nome" suggestions={materias} completeMethod={handleAutoCompleteMateria} label="Matéria" value={turma.materia} onChange={e => setTurma({...turma, materia: e.value})}/>
+					<InputMask width={4} label="Data (Ano-Mês-Dia)" className="p-d-block" mask="9999-99-99" value={turma.data} placeholder="yyyy-mm-dd" slotChar="yyyy-mm-dd" onChange={e => setTurma({...turma, data: e.target.value})}/>
+					<AutoComplete width={12} field="nome" suggestions={tutores} completeMethod={handleAutoCompleteTutor} label="Tutor" value={turma.tutor} onChange={e => setTurma({...turma, tutor: e.value})}/>
+				</PanelContent>
 			</Fieldset>
-
-			<Fieldset legend="Alunos" toggleable>	
-
-			<AutoComplete width={12} field="nome" suggestions={alunos} completeMethod={handleAutoCompleteAluno} label="Aluno" value={turma.aluno} onChange={e => setTurma({...turma, aluno: e.value})}/>
-			<Button label="Adicionar" icon="pi pi-fw pi-save" className="p-justify-end p-button-success" onClick={adicionarAluno}/>
-			<Button label="Remover" icon="pi pi-fw pi-trash" className="p-justify-end p-button-danger" onClick={removerAluno}/>
-
-				<div className="p-col-3 p-text-left">
-					<Button label="Atualizar" icon="pi pi-fw pi-refresh" onClick={handleList}/>
-				</div>	
-				<div className="p-col-3 p-text-left">Alunos Matriculados</div>			
-				<DataTable emptyMessage="Nenhum registro encontrado" value={turma.aluno}>	
-					<Column header="Nome" field="aluno"/>	
+			<div style={{height: "1em"}}/>
+			<Fieldset legend="Alunos" toggleable>
+				<AutoComplete width={12}
+				              field="nome"
+				              suggestions={alunos}
+				              completeMethod={handleAutoCompleteAluno}
+				              label="Aluno"
+				              value={turma.aluno}
+				              onChange={e => setTurma({...turma, aluno: e.value})}
+				              onSelect={e => setTurma({...turma, aluno: "", alunos: [...turma.alunos, e.value]})}
+				/>
+				<DataTable value={turma.alunos}>
+					<Column header="Nome" field="nome"/>
+					<Column header="E-mail" field="email"/>
+					<Column header="Remover" body={a => <Button icon="pi pi-times" onClick={() => {
+						setTurma({...turma, alunos: turma.alunos.filter(u => u.id !== a.id)});
+					}}/>}/>
 				</DataTable>
-
 				<PanelFooter>
+					<Button label="Voltar" icon="pi pi-fw pi-undo" className="p-button-secondary" onClick={handleVoltar}/>
 					<Button label="Salvar" icon="pi pi-fw pi-save" className="p-button-success" onClick={handleSalvar}/>					
 					<Button label="Delete" icon="pi pi-fw pi-trash" className="p-button-danger" onClick={handleExcluir}/>
 				</PanelFooter>
-
-			</Fieldset>	
-
-			<Button label="Voltar" icon="pi pi-fw pi-undo" className="p-button-secondary" onClick={handleVoltar}/>		
+			</Fieldset>
 		</Panel>
 	);
+
 });
