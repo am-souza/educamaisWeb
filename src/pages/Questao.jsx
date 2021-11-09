@@ -1,24 +1,41 @@
-import { Panel } from "primereact/panel";
-import { DataTable } from "primereact/datatable";
-import React, { useEffect, useState } from "react";
-import { Column } from "primereact/column/column.cjs";
-import { Spacer } from "../components/Spacer";
-import { buscar, json, salvar, excluir } from "../utilidades/Fetch";
-import { InputText } from "../components/InputText";
-import { PanelContent } from "../components/PanelContent";
-import { useParams, withRouter, Route } from "react-router";
-import { Button } from "primereact/button";
-import { PanelFooter } from "../components/PanelFooter";
-import { Dropdown } from "../components/Dropdown";
+import {Panel} from "primereact/panel";
+import {DataTable} from "primereact/datatable";
+import React, {useEffect, useState} from "react";
+import {Column} from "primereact/column/column.cjs";
+import {Spacer} from "../components/Spacer";
+import {buscar, excluir, json, salvar} from "../utilidades/Fetch";
+import {InputText} from "../components/InputText";
+import {PanelContent} from "../components/PanelContent";
+import {useParams, withRouter} from "react-router";
+import {Button} from "primereact/button";
+import {PanelFooter} from "../components/PanelFooter";
+import {Checkbox} from "primereact/checkbox";
+import {byKeyOrId} from "../utilidades/FilterUtils";
 
+export function newQuestao() {
+	return {
+		_key: Math.random(),
+		id: null,
+		texto: "",
+		escolhas: []
+	};
+}
+
+export function newQuestaoEscolha() {
+	return {
+		_key: Math.random(),
+		id: null,
+		texto: "",
+		correta: false
+	};
+}
 
 export const PageQuestao = withRouter((props) => {
 	const [questoes, setQuestoes] = useState([]);
 	const [params, setParams] = useState({
 		id: "",
-		texto: "",		
+		texto: "",
 	});
-
 	function handleNew() {
 		props.history.push("/questoes/0");
 	}
@@ -49,19 +66,35 @@ export const PageQuestao = withRouter((props) => {
 });
 
 export const EditQuestao = withRouter((props) => {
-	const { id } = useParams();
-	const [questao, setQuestao] = useState({
-		identif: "",
-		texto: "",
-	});
+	const {id} = useParams();
+	const [questao, setQuestao] = useState(newQuestao());
 	useEffect(() => id !== "0" && buscar(`/questoes/${id}`).then(json).then(setQuestao), [id]);
 	const handleVoltar = () => props.history.push("/questoes");
 	const handleSalvar = () => salvar("/questoes", questao).then(handleVoltar);
-	const handleExcluir = () => excluir("/questoes").then(handleVoltar);
+	const handleExcluir = () => excluir(`/questoes/${questao.id}`).then(handleVoltar);
 	return (
 		<Panel header="Questao">
 			<PanelContent>
-				<InputText width={12} label="Questao" value={questao.texto} onChange={e => setQuestao({...questao, texto: e.target.value})}/>
+				<InputText width={12} label="Pergunta" value={questao.texto} onChange={e => setQuestao({...questao, texto: e.target.value})}/>
+				<DataTable rows={5} value={questao.escolhas} paginator paginatorLeft={
+					<Button icon="pi pi-plus" onClick={() => setQuestao({...questao, escolhas: [...questao.escolhas, newQuestaoEscolha()]})}/>
+				}>
+					<Column header="Resposta" body={r => (
+						<InputText value={r.texto} onChange={e => {
+							questao.escolhas.filter(q => byKeyOrId(q, r)).forEach(r => r.texto = e.target.value);
+							setQuestao({...questao});
+						}}/>
+					)}/>
+					<Column header="Correta?" body={r => (
+						<Checkbox checked={r.correta} onChange={() => {
+							questao.escolhas.filter(q => byKeyOrId(q, r)).forEach(r => r.correta = !r.correta);
+							setQuestao({...questao});
+						}}/>
+					)}/>
+					<Column header="Remover" body={r => (
+						<Button icon="pi pi-times" onClick={() => setQuestao({...questao, escolhas: questao.escolhas.filter(e => e.id !== r.id)})}/>
+					)}/>
+				</DataTable>
 			</PanelContent>
 			<PanelFooter>
 				<Button label="Salvar" icon="pi pi-fw pi-save" className="p-button-success" onClick={handleSalvar}/>
