@@ -11,12 +11,14 @@ import {Button} from "primereact/button";
 import {PanelFooter} from "../components/PanelFooter";
 import {Checkbox} from "primereact/checkbox";
 import {byKeyOrId} from "../utilidades/FilterUtils";
+import {AutoComplete} from "../components/AutoComplete";
 
 export function newQuestao() {
 	return {
 		_key: Math.random(),
 		id: null,
 		texto: "",
+		materia: null,
 		escolhas: []
 	};
 }
@@ -68,7 +70,9 @@ export const PageQuestao = withRouter((props) => {
 export const EditQuestao = withRouter((props) => {
 	const {id} = useParams();
 	const [questao, setQuestao] = useState(newQuestao());
+	const [materias, setMaterias] = useState([]);
 	useEffect(() => id !== "0" && buscar(`/questoes/${id}`).then(json).then(setQuestao), [id]);
+	const handleAutoCompleteMateria = (e) => buscar(`/materias?nome=ik=${e.query}`).then(json).then(setMaterias);
 	const handleVoltar = () => props.history.push("/questoes");
 	const handleSalvar = () => salvar("/questoes", questao).then(handleVoltar);
 	const handleExcluir = () => excluir(`/questoes/${questao.id}`).then(handleVoltar);
@@ -76,6 +80,7 @@ export const EditQuestao = withRouter((props) => {
 		<Panel header="Questao">
 			<PanelContent>
 				<InputText width={12} label="Pergunta" value={questao.texto} onChange={e => setQuestao({...questao, texto: e.target.value})}/>
+				<AutoComplete width={8} field="nome" suggestions={materias} completeMethod={handleAutoCompleteMateria} label="Matéria" value={questao.materia} onChange={e => setQuestao({...questao, materia: e.value})}/>
 				<DataTable rows={5} value={questao.escolhas} paginator paginatorLeft={
 					<Button icon="pi pi-plus" onClick={() => setQuestao({...questao, escolhas: [...questao.escolhas, newQuestaoEscolha()]})}/>
 				}>
