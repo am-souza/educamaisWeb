@@ -1,26 +1,19 @@
-import { Panel } from "primereact/panel";
-import { DataTable } from "primereact/datatable";
-import React, { useEffect, useState } from "react";
-import { Column } from "primereact/column/column.cjs";
-import { Spacer } from "../components/Spacer";
-import { buscar, json, salvar, excluir } from "../utilidades/Fetch";
-import { InputText } from "../components/InputText";
-import { PanelContent } from "../components/PanelContent";
-import { useParams, withRouter, Route } from "react-router";
-import { Button } from "primereact/button";
-import { PanelFooter } from "../components/PanelFooter";
-import { AutoComplete } from "../components/AutoComplete";
-import { Fieldset } from 'primereact/fieldset';
+import {Panel} from "primereact/panel";
+import {DataTable} from "primereact/datatable";
+import React, {useEffect, useState} from "react";
+import {Column} from "primereact/column/column.cjs";
+import {Spacer} from "../components/Spacer";
+import {buscar, excluir, json, salvar} from "../utilidades/Fetch";
+import {InputText} from "../components/InputText";
+import {PanelContent} from "../components/PanelContent";
+import {useParams, withRouter} from "react-router-dom";
+import {Button} from "primereact/button";
+import {PanelFooter} from "../components/PanelFooter";
+import {AutoComplete} from "../components/AutoComplete";
+import {Fieldset} from 'primereact/fieldset';
 import {Dropdown} from "../components/Dropdown";
 import {InputNumber} from "../components/InputNumber";
 import {InputMask} from "../components/InputMask";
-
-const Usuario_Perfil = [
-	{label: "Nenhum", value: null},
-	"ADMINISTRADOR",
-	"TUTOR",
-	"ALUNO"
-];
 
 const Turma_Periodo = [
 	{label: "Nenhum", value: null},
@@ -70,9 +63,7 @@ export const PageTurma = withRouter((props) => {
 });
 
 export const EditTurma = withRouter((props) => {
-
 	const { id } = useParams();
-
 	const [turma, setTurma] = useState({
 		nome: "",
 		periodo: null,
@@ -80,21 +71,16 @@ export const EditTurma = withRouter((props) => {
 		materia: null,
 		alunos: []
 	});
-
 	const [tutores, setTutores] = useState([]);	
 	const [materias, setMaterias] = useState([]);
-	const [alunos, setAlunos] = useState([]);	
-
+	const [alunos, setAlunos] = useState([]);
 	useEffect(() => id !== "0" && buscar(`/turmas/${id}`).then(json).then(setTurma), [id]);
-
 	const handleVoltar = () => props.history.push("/turmas");
 	const handleSalvar = () => salvar("/turmas", turma).then(handleVoltar);
 	const handleExcluir = () => excluir(`/turmas/${turma.id}`).then(handleVoltar);
-
 	const handleAutoCompleteTutor = (e) => buscar(`/usuarios?perfil==TUTOR;nome=ik=${e.query}`).then(json).then(setTutores);
 	const handleAutoCompleteMateria = (e) => buscar(`/materias?nome=ik=${e.query}`).then(json).then(setMaterias);
 	const handleAutoCompleteAluno = (e) => buscar(`/usuarios?perfil==ALUNO;nome=ik=${e.query}`).then(json).then(setAlunos);
-
 	return (
 		<Panel header="Turma">
 			<Fieldset legend="Configuração geral" toggleable>
@@ -133,5 +119,4 @@ export const EditTurma = withRouter((props) => {
 			</Fieldset>
 		</Panel>
 	);
-
 });
