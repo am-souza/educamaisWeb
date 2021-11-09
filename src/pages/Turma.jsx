@@ -81,14 +81,6 @@ export const EditTurma = withRouter((props) => {
 		alunos: []
 	});
 
-	const [params, setParams] = useState({
-		username: "",
-		nome: "",
-		email: "",
-		perfil: null
-	});
-
-	const [usuarios, setUsuarios] = useState([]);
 	const [tutores, setTutores] = useState([]);	
 	const [materias, setMaterias] = useState([]);
 	const [alunos, setAlunos] = useState([]);	
@@ -102,22 +94,6 @@ export const EditTurma = withRouter((props) => {
 	const handleAutoCompleteTutor = (e) => buscar(`/usuarios?perfil==TUTOR;nome=ik=${e.query}`).then(json).then(setTutores);
 	const handleAutoCompleteMateria = (e) => buscar(`/materias?nome=ik=${e.query}`).then(json).then(setMaterias);
 	const handleAutoCompleteAluno = (e) => buscar(`/usuarios?perfil==ALUNO;nome=ik=${e.query}`).then(json).then(setAlunos);
-
-	function handleList() {
-		const query = [];
-		if (params.username?.length) query.push(`username=ik=${params.username}`);
-		if (params.nome?.length) query.push(`nome=ik=${params.nome}`);
-		if (params.perfil?.length) query.push(`perfil==${params.perfil}`);
-		buscar(`/usuarios?${query.join(";")}`).then(json).then(setUsuarios);
-	}
-
-	function adicionarAluno() {		
-		
-	}
-
-	function removerAluno() {		
-
-	}	
 
 	return (
 		<Panel header="Turma">
