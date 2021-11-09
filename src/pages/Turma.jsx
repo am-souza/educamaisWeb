@@ -81,7 +81,7 @@ export const EditTurma = withRouter((props) => {
 	const handleExcluir = () => excluir(`/turmas/${turma.id}`).then(handleVoltar);
 	const handleAutoCompleteTutor = (e) => buscar(`/usuarios?perfil==TUTOR;nome=ik=${e.query}`).then(json).then(setTutores);
 	const handleAutoCompleteMateria = (e) => buscar(`/materias?nome=ik=${e.query}`).then(json).then(setMaterias);
-	const handleAutoCompleteAluno = (e) => buscar(`/usuarios?perfil==ALUNO;nome=ik=${e.query}`).then(json).then(setAlunos);
+	const handleAutoCompleteAluno = (e) => buscar(`/usuarios?id=out=(${turma.alunos.map(q => q.id).join(",") || "0"});perfil==ALUNO;nome=ik=${e.query}`).then(json).then(setAlunos);
 	return (
 		<Panel header="Turma">
 			<TabView>

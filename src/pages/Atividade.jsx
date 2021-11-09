@@ -9,6 +9,9 @@ import {PanelContent} from "../components/PanelContent";
 import {useParams, withRouter} from "react-router-dom";
 import {Button} from "primereact/button";
 import {PanelFooter} from "../components/PanelFooter";
+import {TabPanel, TabView} from "primereact/tabview";
+import {AutoComplete} from "../components/AutoComplete";
+import {Calendar} from "../components/Calendar";
 
 function newAtividade() {
 	return {
@@ -49,8 +52,8 @@ export const PageAtividade = withRouter((props) => {
 			</Panel>
 			<Spacer/>
 			<DataTable emptyMessage="Nenhum registro encontrado" value={atividades} onRowDoubleClick={e => props.history.push(`/atividades/${atividades[e.index].id}`)}>
-				<Column header="ID" field="ID"/>
-				<Column header="Texto" field="texto"/>				
+				<Column header="ID" field="id"/>
+				<Column header="Nome" field="nome"/>
 			</DataTable>
 		</div>
 	);
@@ -59,15 +62,44 @@ export const PageAtividade = withRouter((props) => {
 export const EditAtividade = withRouter((props) => {
 	const { id } = useParams();
 	const [atividade, setAtividade] = useState(newAtividade());
+	const [questoes, setQuestoes] = useState([]);
 	useEffect(() => id !== "0" && buscar(`/atividades/${id}`).then(json).then(setAtividade), [id]);
 	const handleVoltar = () => props.history.push("/atividades");
 	const handleSalvar = () => salvar("/atividades", atividade).then(handleVoltar);
 	const handleExcluir = () => excluir(`/atividades/${atividade.id}`).then(handleVoltar);
+	const handleAutoCompleteQuestao = (e) => buscar(`/questoes?id=out=(${atividade.questoes.map(q => q.id).join(",") || "0"});texto=ik=${e.query}`).then(json).then(setQuestoes);
 	return (
 		<Panel header="Atividade">
-			<PanelContent>
-				<InputText width={12} label="Atividade" value={atividade.texto} onChange={e => setAtividade({...atividade, texto: e.target.value})}/>
-			</PanelContent>
+			<TabView>
+				<TabPanel header="Dados Principais">
+					<PanelContent>
+						<InputText width={12} label="Nome" value={atividade.nome} onChange={e => setAtividade({...atividade, nome: e.target.value})}/>
+						<Calendar showTime width={12} label="Início" value={atividade.dtInicio} onChange={e => setAtividade({...atividade, dtInicio: e.value})}/>
+						<Calendar showTime width={12} label="Fim" value={atividade.dtFim} onChange={e => setAtividade({...atividade, dtFim: e.value})}/>
+					</PanelContent>
+				</TabPanel>
+				<TabPanel header="Questões">
+					<PanelContent>
+						<AutoComplete width={12}
+						              field="texto"
+						              suggestions={questoes}
+						              completeMethod={handleAutoCompleteQuestao}
+						              label="Questão"
+						              value={atividade.questao}
+						              onChange={e => setAtividade({...atividade, questao: e.value})}
+						              onSelect={e => setAtividade({...atividade, questao: "", questoes: [...atividade.questoes, e.value]})}
+						/>
+						<div className="p-col-12">
+							<DataTable paginator rows={10} value={atividade.questoes}>
+								<Column header="Pergunta" field="texto"/>
+								<Column style={{textAlign: "center", width: "6em"}} header="Remover" body={a => <Button icon="pi pi-times" onClick={() => {
+									setAtividade({...atividade, questoes: atividade.questoes.filter(u => u.id !== a.id)});
+								}}/>}/>
+							</DataTable>
+						</div>
+					</PanelContent>
+				</TabPanel>
+			</TabView>
 			<PanelFooter>
 				<Button label="Salvar" icon="pi pi-fw pi-save" className="p-button-success" onClick={handleSalvar}/>
 				<Button label="Voltar" icon="pi pi-fw pi-undo" className="p-button-secondary" onClick={handleVoltar}/>
