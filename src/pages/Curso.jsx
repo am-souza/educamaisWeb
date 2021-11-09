@@ -16,7 +16,6 @@ export const PageCurso = withRouter((props) => {
 		id: "",
 		nome: "",		
 	});
-
 	function handleNew() {
 		props.history.push("/cursos/0");
 	}
@@ -59,9 +58,9 @@ export const EditCurso = withRouter((props) => {
 	const handleSalvar = () => salvar("/cursos", curso).then(handleVoltar);
 	const handleExcluir = () => excluir(`/cursos/${curso.id}`).then(handleVoltar);
 	return (
-		<Panel header="Resposta">
+		<Panel header="Curso">
 			<PanelContent>
-				<InputText width={8} label="Texto" value={curso.nome} onChange={e => setCurso({...curso, nome: e.target.value})}/>				
+				<InputText width={8} label="Nome" value={curso.nome} onChange={e => setCurso({...curso, nome: e.target.value})}/>
 			</PanelContent>
 			<PanelFooter>
 				<Button label="Salvar" icon="pi pi-fw pi-save" className="p-button-success" onClick={handleSalvar}/>
