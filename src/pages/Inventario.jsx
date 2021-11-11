@@ -1,21 +1,15 @@
-import {Panel} from "primereact/panel";
-import {DataTable} from "primereact/datatable";
-import React, {useEffect, useState} from "react";
-import {Column} from "primereact/column/column.cjs";
-import {Spacer} from "../components/Spacer";
-import {buscar, excluir, json, salvar} from "../utilidades/Fetch";
-import {InputText} from "../components/InputText";
-import {PanelContent} from "../components/PanelContent";
-import {useParams, withRouter} from "react-router-dom";
-import {Button} from "primereact/button";
-import {PanelFooter} from "../components/PanelFooter";
-import {AutoComplete} from "../components/AutoComplete";
+import React from "react";
+import {withRouter} from "react-router-dom";
+import avatar from "../img/avatar/17.png";
 
 export const PageInventario = withRouter((props) => {
 	
+	
+
 	return (
 		<div>
-			Seus Itens
+			 Inventory!		 
+			<img src={avatar} alt="Sem Texto" width="250"/>;	
 		</div>
 	);
 });

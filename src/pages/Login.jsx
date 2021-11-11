@@ -5,7 +5,6 @@ import {Button} from "primereact/button";
 import {InputText} from "../components/InputText";
 import {PanelContent} from "../components/PanelContent";
 import {PanelFooter} from "../components/PanelFooter";
-import { Image } from 'primereact/image'; 
 import "./Pages.scss";
 import l from "../img/logo.jpg"
 
@@ -18,8 +17,8 @@ export function PageLogin(props) {
 	});
 	return (
 		<div className="p-grid">	
-			<div className="p-col-3 p-mt-4 p-offset-4">
-				<img src={l} alt="Sem Texto" width="250"/>
+			<div className="p-col-5 p-mt-6 p-offset-4 ">
+				<img src={l} alt="Sem Texto" width="300"/>
 			</div>		
 			<div className="p-col-12 p-align-center">
 				<div className="login-form">

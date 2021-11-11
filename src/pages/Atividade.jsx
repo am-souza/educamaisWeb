@@ -11,8 +11,6 @@ import {Button} from "primereact/button";
 import {PanelFooter} from "../components/PanelFooter";
 import {TabPanel, TabView} from "primereact/tabview";
 import {AutoComplete} from "../components/AutoComplete";
-import {Calendar} from "../components/Calendar";
-import moment from "moment";
 
 function newAtividade() {
 	return {

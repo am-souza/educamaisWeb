@@ -12,7 +12,6 @@ import {PanelFooter} from "../components/PanelFooter";
 import moment from "moment";
 import {AutoComplete} from "../components/AutoComplete";
 import {Calendar} from "../components/Calendar";
-import {InputNumber} from "../components/InputNumber";
 
 function newAvaliacao() {
 	return {

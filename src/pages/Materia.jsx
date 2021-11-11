@@ -9,7 +9,6 @@ import {PanelContent} from "../components/PanelContent";
 import {useParams, withRouter} from "react-router-dom";
 import {Button} from "primereact/button";
 import {PanelFooter} from "../components/PanelFooter";
-import {AutoComplete} from "../components/AutoComplete";
 
 export const PageMateria = withRouter((props) => {
 	const [materias, setMaterias] = useState([]);
@@ -50,15 +49,14 @@ export const PageMateria = withRouter((props) => {
 export const EditMateria = withRouter((props) => {
 	const { id } = useParams();
 	const [materia, setMateria] = useState({
-		nome: "",
-		//tutor: "",
+		nome: "",		
 	});
-	const [tutores, setTutores] = useState([]);
+	
 	useEffect(() => id !== "0" && buscar(`/materias/${id}`).then(json).then(setMateria), [id]);
 	const handleVoltar = () => props.history.push("/materias");
 	const handleSalvar = () => salvar("/materias", materia).then(handleVoltar);
 	const handleExcluir = () => excluir(`/materias/${materia.id}`).then(handleVoltar);
-	const handleAutoCompleteTutor = (e) => buscar(`/usuarios?perfil==TUTOR;nome=ik=${e.query}`).then(json).then(setTutores);
+	
 	return (
 		<Panel header="Materia">
 			<PanelContent>

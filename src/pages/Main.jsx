@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
 import {Menubar} from "primereact/menubar";
 import {Button} from "primereact/button";
 import {handleLogout, handleMenu, withUser} from "../utilidades/Auth";
@@ -16,7 +16,6 @@ import {EditCurso, PageCurso} from "./Curso";
 import {PageLoja} from "./Loja";
 import {PageInventario} from "./Inventario";
 import {Tag} from "primereact/tag";
-import { Image } from 'primereact/image'; 
 
 
 export const PageMain = withUser(withRouter(((props) => {

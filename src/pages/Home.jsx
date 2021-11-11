@@ -1,23 +1,11 @@
-import {Panel} from "primereact/panel";
 import {DataTable} from "primereact/datatable";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {Column} from "primereact/column/column.cjs";
-import { Toast } from 'primereact/toast';
-import {Spacer} from "../components/Spacer";
-import {buscar, excluir, json, salvar} from "../utilidades/Fetch";
-import {InputText} from "../components/InputText";
-import {PanelContent} from "../components/PanelContent";
-import {useParams, withRouter} from "react-router-dom";
-import {Button} from "primereact/button";
-import {PanelFooter} from "../components/PanelFooter";
-import {AutoComplete} from "../components/AutoComplete";
-import {Dropdown} from "../components/Dropdown";
-import {InputNumber} from "../components/InputNumber";
-import {Calendar} from "../components/Calendar";
-import {TabPanel, TabView} from "primereact/tabview";
-import { Image } from 'primereact/image';
-import na from '../img/naruto.jpg';
+import {withRouter} from "react-router-dom";
 import avatar from "../img/avatar/1.png";
+
+
+
 
 export const PageHome = withRouter((props) => {
 
@@ -33,7 +21,7 @@ export const PageHome = withRouter((props) => {
 					<Column header="Email" field="email"/>
 				</DataTable>
 			</div>		
-			<div className="p-col-5">	
+			<div className="p-col-3 p-mt-6 p-offset-1">	
 				<img src={avatar} alt="Sem Texto" width="250"/>							
 			</div>
 		</div>
