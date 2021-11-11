@@ -37,6 +37,7 @@ export const PageQuestao = withRouter((props) => {
 	const [params, setParams] = useState({
 		id: "",
 		texto: "",
+		materia:"",
 	});
 	function handleNew() {
 		props.history.push("/questoes/0");
@@ -45,13 +46,14 @@ export const PageQuestao = withRouter((props) => {
 		const query = [];
 		if (params.id?.length) query.push(`id=ik=${params.id}`);
 		if (params.texto?.length) query.push(`texto==${params.texto}`);
+		if (params.materia?.length) query.push(`materia==${params.materia}`);
 		buscar(`/questoes?${query.join(";")}`).then(json).then(setQuestoes);
 	}
 	return (
 		<div>
 			<Panel header="Questões">
 				<PanelContent>
-					<InputText label="ID" width={6} value={params.identif} onChange={e => setParams({...params, id: e.target.value})}/>					
+					<InputText label="Nome" width={6} value={params.nome} onChange={e => setParams({...params, nome: e.target.value})}/>					
 				</PanelContent>
 				<PanelFooter>
 					<Button label="Novo" className="p-button-warning" icon="pi pi-fw pi-plus" onClick={handleNew}/>
@@ -60,9 +62,9 @@ export const PageQuestao = withRouter((props) => {
 			</Panel>
 			<Spacer/>
 			<DataTable emptyMessage="Nenhum registro encontrado" value={questoes} onRowDoubleClick={e => props.history.push(`/questoes/${questoes[e.index].id}`)}>
-				<Column header="ID" field="id"/>
-				<Column header="Matéria" body={q => q.materia?.nome}/>
-				<Column header="Texto" field="texto"/>				
+				<Column className="p-col-1" header="ID" field="id"/>
+				<Column header="Matéria" field="materia.nome"/>
+				<Column header="Pergunta" field="texto"/>				
 			</DataTable>
 		</div>
 	);

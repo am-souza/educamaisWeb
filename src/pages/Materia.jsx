@@ -15,7 +15,7 @@ export const PageMateria = withRouter((props) => {
 	const [materias, setMaterias] = useState([]);
 	const [params, setParams] = useState({
 		nome: "",
-		tutor: "",
+		//tutor: "",
 		id: "",
 				
 	});
@@ -40,9 +40,8 @@ export const PageMateria = withRouter((props) => {
 			</Panel>
 			<Spacer/>
 			<DataTable emptyMessage="Nenhum registro encontrado" value={materias} onRowDoubleClick={e => props.history.push(`/materias/${materias[e.index].id}`)}>
-                <Column header="ID" field="id"/>								
-                <Column header="Nome" field="nome"/>
-				<Column header="Tutor" field="tutor.nome"/>								                
+				<Column className="p-col-1" header="ID" field="id"/>
+                <Column header="Nome" field="nome"/>												                
 			</DataTable>
 		</div>
 	);
@@ -52,7 +51,7 @@ export const EditMateria = withRouter((props) => {
 	const { id } = useParams();
 	const [materia, setMateria] = useState({
 		nome: "",
-		tutor: "",
+		//tutor: "",
 	});
 	const [tutores, setTutores] = useState([]);
 	useEffect(() => id !== "0" && buscar(`/materias/${id}`).then(json).then(setMateria), [id]);
@@ -63,8 +62,7 @@ export const EditMateria = withRouter((props) => {
 	return (
 		<Panel header="Materia">
 			<PanelContent>
-				<InputText width={8} label="Nome" value={materia.nome} onChange={e => setMateria({...materia, nome: e.target.value})}/>								
-				<AutoComplete width={12} field="nome" suggestions={tutores} completeMethod={handleAutoCompleteTutor} label="Tutor" value={materia.tutor} onChange={e => setMateria({...materia, tutor: e.value})}/>				
+				<InputText width={8} label="Nome" value={materia.nome} onChange={e => setMateria({...materia, nome: e.target.value})}/>												
 			</PanelContent>
 			<PanelFooter>
 				<Button label="Salvar" icon="pi pi-fw pi-save" className="p-button-success" onClick={handleSalvar}/>

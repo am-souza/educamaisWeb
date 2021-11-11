@@ -10,6 +10,7 @@ import {useParams, withRouter} from "react-router-dom";
 import {Button} from "primereact/button";
 import {PanelFooter} from "../components/PanelFooter";
 import {Dropdown} from "../components/Dropdown";
+import { InputNumber } from "../components/InputNumber";
 
 const Usuario_Perfil = [
 	{label: "Nenhum", value: null},
@@ -30,6 +31,7 @@ function newUsuario() {
 export const PageUsuario = withRouter((props) => {
 	const [usuarios, setUsuarios] = useState([]);
 	const [params, setParams] = useState({
+		id: null,
 		username: "",
 		nome: "",
 		email: "",
@@ -40,6 +42,7 @@ export const PageUsuario = withRouter((props) => {
 	}
 	function handleList() {
 		const query = [];
+		if (params.id) query.push(`id==${params.id}`);
 		if (params.username?.length) query.push(`username=ik=${params.username}`);
 		if (params.nome?.length) query.push(`nome=ik=${params.nome}`);
 		if (params.perfil?.length) query.push(`perfil==${params.perfil}`);
@@ -49,6 +52,7 @@ export const PageUsuario = withRouter((props) => {
 		<div>
 			<Panel header="Usuários">
 				<PanelContent>
+					<InputNumber label="ID" width={2} value={params.id} onChange={e => setParams({...params, id: Number(e.value)})}/>
 					<InputText label="Login" width={3} value={params.username} onChange={e => setParams({...params, username: e.target.value})}/>
 					<InputText label="Nome" width={6} value={params.nome} onChange={e => setParams({...params, nome: e.target.value})}/>					
 					<Dropdown options={Usuario_Perfil} label="Perfil" width={3} value={params.perfil} onChange={e => setParams({...params, perfil: e.value})}/>

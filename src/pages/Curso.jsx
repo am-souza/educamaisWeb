@@ -20,11 +20,7 @@ export const PageCurso = withRouter((props) => {
 		props.history.push("/cursos/0");
 	}
 	function handleList() {
-		const query = [];
-		//if (params.id?.length) query.push(`id=ik=${params.id}`);
-		//if (params.texto?.length) query.push(`nome==${params.texto}`);
-		//buscar(`/cursos?${query.join(";")}`).then(json).then(setCursos);
-
+		const query = [];		
 		if (params.nome?.length) query.push(`nome=ik=${params.nome}`);
 		buscar(`/cursos?${query.join(";")}`).then(json).then(setCursos);
 	}
@@ -41,7 +37,7 @@ export const PageCurso = withRouter((props) => {
 			</Panel>
 			<Spacer/>
 			<DataTable emptyMessage="Nenhum registro encontrado" value={cursos} onRowDoubleClick={e => props.history.push(`/cursos/${cursos[e.index].id}`)}>
-				<Column header="ID" field="id"/>				
+				<Column className="p-col-1" header="ID" field="id"/>
 				<Column header="Nome" field="nome"/>
 			</DataTable>  
 		</div>

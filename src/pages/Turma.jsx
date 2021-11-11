@@ -54,8 +54,8 @@ export const PageTurma = withRouter((props) => {
 			<Spacer/>
 			<DataTable emptyMessage="Nenhum registro encontrado" value={turmas} onRowDoubleClick={e => props.history.push(`/turmas/${turmas[e.index].id}`)}>
 				<Column header="Nome" field="nome"/>
-				<Column header="Período" field="periodo"/>
-				<Column header="Número" field="numeroTurma"/>
+				<Column className="p-col-2" header="Período" field="periodo"/>
+				<Column className="p-col-2" header="Número" field="numeroTurma"/>
 				<Column header="Matéria" body={t => t.materia?.nome}/>
 				<Column header="Tutor" body={t => t.tutor?.nome}/>
 			</DataTable>
@@ -90,9 +90,10 @@ export const EditTurma = withRouter((props) => {
 						<InputText width={6} label="Nome" value={turma.nome} onChange={e => setTurma({...turma, nome: e.target.value})}/>
 						<InputNumber label="Número" width={2} value={turma.numeroTurma} onValueChange={e => setTurma({...turma, numeroTurma: e.target.value})}/>
 						<Dropdown label="Período" width={4} options={Turma_Periodo} value={turma.periodo} onChange={e => setTurma({...turma, periodo: e.value})}/>
-						<AutoComplete width={8} field="nome" suggestions={materias} completeMethod={handleAutoCompleteMateria} label="Matéria" value={turma.materia} onChange={e => setTurma({...turma, materia: e.value})}/>
+						<AutoComplete width={6} field="nome" suggestions={materias} completeMethod={handleAutoCompleteMateria} label="Matéria" value={turma.materia} onChange={e => setTurma({...turma, materia: e.value})}/>						
 						<Calendar width={4} label="Data" value={turma.data} onChange={e => setTurma({...turma, data: e.value})}/>
-						<AutoComplete width={12} field="nome" suggestions={tutores} completeMethod={handleAutoCompleteTutor} label="Tutor" value={turma.tutor} onChange={e => setTurma({...turma, tutor: e.value})}/>
+						<i className="pi pi-calendar"></i>
+						<AutoComplete width={6} field="nome" suggestions={tutores} completeMethod={handleAutoCompleteTutor} label="Tutor" value={turma.tutor} onChange={e => setTurma({...turma, tutor: e.value})}/>
 					</PanelContent>
 				</TabPanel>
 				<TabPanel header="Alunos">

@@ -12,13 +12,12 @@ import {PanelFooter} from "../components/PanelFooter";
 import {TabPanel, TabView} from "primereact/tabview";
 import {AutoComplete} from "../components/AutoComplete";
 import {Calendar} from "../components/Calendar";
+import moment from "moment";
 
 function newAtividade() {
 	return {
 		_key: Math.random(),
 		id: null,
-		dtInicio: null,
-		dtFim: null,
 		nome: "",
 		questoes: []
 	};
@@ -27,9 +26,8 @@ function newAtividade() {
 export const PageAtividade = withRouter((props) => {
 	const [atividades, setAtividades] = useState([]);
 	const [params, setParams] = useState({
-		texto: "",		
+		texto: ""
 	});
-
 	function handleNew() {
 		props.history.push("/atividades/0");
 	}
@@ -53,7 +51,7 @@ export const PageAtividade = withRouter((props) => {
 			</Panel>
 			<Spacer/>
 			<DataTable emptyMessage="Nenhum registro encontrado" value={atividades} onRowDoubleClick={e => props.history.push(`/atividades/${atividades[e.index].id}`)}>
-				<Column header="ID" field="id"/>
+				<Column className="p-col-1" header="ID" field="id"/>
 				<Column header="Nome" field="nome"/>
 			</DataTable>
 		</div>
@@ -75,8 +73,6 @@ export const EditAtividade = withRouter((props) => {
 				<TabPanel header="Dados Principais">
 					<PanelContent>
 						<InputText width={12} label="Nome" value={atividade.nome} onChange={e => setAtividade({...atividade, nome: e.target.value})}/>
-						<Calendar showTime width={6} label="Início" value={atividade.dtInicio} onChange={e => setAtividade({...atividade, dtInicio: e.value})}/>
-						<Calendar showTime width={6} label="Fim" value={atividade.dtFim} onChange={e => setAtividade({...atividade, dtFim: e.value})}/>
 					</PanelContent>
 				</TabPanel>
 				<TabPanel header="Questões">

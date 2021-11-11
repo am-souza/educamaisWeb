@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {Menubar} from "primereact/menubar";
 import {Button} from "primereact/button";
 import {handleLogout, handleMenu, withUser} from "../utilidades/Auth";
@@ -7,38 +7,29 @@ import {PageHome} from "./Home";
 import {EditUsuario, PageUsuario} from "./Usuario";
 import {EditQuestao, PageQuestao} from "./Questao";
 import {EditAtividade, PageAtividade} from "./Atividade";
-import {PageAvaliacao} from "./Avaliacao";
+import {PageAvaliacao, EditAvaliacao} from "./Avaliacao";
 import {EditTurma, PageTurma} from "./Turma";
 import {Spacer} from "../components/Spacer";
 import {EditRespostas, PageRespostas} from "./Respostas";
 import {EditMateria, PageMateria} from "./Materia";
 import {EditCurso, PageCurso} from "./Curso";
-import {buscar, json} from "../utilidades/Fetch";
+import {PageLoja} from "./Loja";
+import {PageInventario} from "./Inventario";
 import {Tag} from "primereact/tag";
 
+
 export const PageMain = withUser(withRouter(((props) => {
-	const [usuarios, setUsuarios] = useState([]);
-/*
-	useEffect(()=>{
-		buscar("/usuarios/eu").then(json).then(setUsuarios);
-	})
-*/
-	function handleList() {
-		buscar("/usuarios/eu").then(json).then(setUsuarios);
-	}
 	return (
 		<div>
+			
 			<div className="p-grid">
-				<div className="p-col-9" >
-					<Menubar model={handleMenu(props)} end={<Button icon="pi pi-fw pi-power-off" label="Logout" onClick={handleLogout}/>}/>
-				</div>
-				<div className="p-col-3  p-mt-3">					
-					<Tag className="p-mr-1 " label="XP" icon="pi pi-flag" value={usuarios.xp} style={{backgroundColor: "#2196F3", color: "#ffffff"}}>XP</Tag>
-					<Tag className="p-mr-1" label="Cash" icon="pi pi-dollar" value={usuarios.cash} style={{backgroundColor: "#2196F3", color: "#ffffff"}}>CASH</Tag>
-					<Tag className="p-mr-2" icon="pi pi-user" value={usuarios.username} style={{backgroundColor: "#2196F3", color: "#ffffff"}}/>
-				</div>
-			</div>
-			<Spacer/>
+				<Menubar className="p-col-7" model={handleMenu(props)} end={<Button icon="pi pi-fw pi-power-off" label="Logout" onClick={handleLogout}/>}/>			
+				<Tag className="p-col-1 p-ml-5 p-mr-2" label="XP" icon="pi pi-flag" value={props.usuario.xp} style={{backgroundColor: "#2196F3", color: "#ffffff"}}>XP</Tag>
+				<Tag className="p-col-1 p-mr-2" label="Cash" icon="pi pi-dollar" value={props.usuario.cash} style={{backgroundColor: "#2196F3", color: "#ffffff"}}>CASH</Tag>
+				<Tag className="p-col-2" icon="pi pi-user" value={props.usuario.nome} style={{backgroundColor: "#2196F3", color: "#ffffff"}}/>	
+			</div>			
+			<Spacer/>			
+
 			<Switch>
 				<Route exact path="/" component={PageHome}/>
 				<Route exact path="/usuarios" component={PageUsuario}/>
@@ -48,6 +39,7 @@ export const PageMain = withUser(withRouter(((props) => {
 				<Route exact path="/atividades" component={PageAtividade}/>
 				<Route exact path="/atividades/:id" component={EditAtividade}/>
 				<Route exact path="/avaliacoes" component={PageAvaliacao}/>
+				<Route exact path="/avaliacoes/:id" component={EditAvaliacao}/>
 				<Route exact path="/turmas" component={PageTurma}/>
 				<Route exact path="/turmas/:id" component={EditTurma}/>
 				<Route exact path="/respostas" component={PageRespostas}/>
@@ -56,7 +48,10 @@ export const PageMain = withUser(withRouter(((props) => {
 				<Route exact path="/materias/:id" component={EditMateria}/>
 				<Route exact path="/cursos" component={PageCurso}/>
 				<Route exact path="/cursos/:id" component={EditCurso}/>
+				<Route exact path="/loja" component={PageLoja}/>
+				<Route exact path="/inventario" component={PageInventario}/>				
 			</Switch>
 		</div>
 	);
 })));
+

@@ -9,6 +9,10 @@ import {PanelContent} from "../components/PanelContent";
 import {useParams, withRouter} from "react-router-dom";
 import {Button} from "primereact/button";
 import {PanelFooter} from "../components/PanelFooter";
+import moment from "moment";
+import {AutoComplete} from "../components/AutoComplete";
+import {Calendar} from "../components/Calendar";
+import {InputNumber} from "../components/InputNumber";
 
 function newAvaliacao() {
 	return {
@@ -16,8 +20,9 @@ function newAvaliacao() {
 		id: null,
 		atividade: null,
 		turma: null,
-		inicio: null,
-		fim: null
+		inicio: moment().format("YYYY-MM-DDTHH:mm:ss"),
+		fim: moment().format("YYYY-MM-DDTHH:mm:ss"),
+		valor:"",
 	};
 }
 
@@ -49,8 +54,9 @@ export const PageAvaliacao = withRouter((props) => {
 			</Panel>
 			<Spacer/>
 			<DataTable emptyMessage="Nenhum registro encontrado" value={avaliacoes} onRowDoubleClick={e => props.history.push(`/avaliacoes/${avaliacoes[e.index].id}`)}>
-				<Column header="ID" field="ID"/>
-				<Column header="Texto" field="texto"/>				
+				<Column className="p-col-1" header="ID" field="id"/>
+				<Column header="Turma" field="turma.nome"/>				
+				<Column header="Atividade" field="atividade.nome"/>				
 			</DataTable>
 		</div>
 	);
@@ -59,14 +65,34 @@ export const PageAvaliacao = withRouter((props) => {
 export const EditAvaliacao = withRouter((props) => {
 	const { id } = useParams();
 	const [avaliacao, setAvaliacao] = useState(newAvaliacao());
+
 	useEffect(() => id !== "0" && buscar(`/avaliacoes/${id}`).then(json).then(setAvaliacao), [id]);
+
 	const handleVoltar = () => props.history.push("/avaliacoes");
 	const handleSalvar = () => salvar("/avaliacoes", avaliacao).then(handleVoltar);
 	const handleExcluir = () => excluir("/avaliacoes").then(handleVoltar);
+
+	const [turmas, setTurmas] = useState([]);
+	const handleAutoCompleteTurma = (e) => buscar(`/turmas?nome=ik=${e.query}`).then(json).then(setTurmas);
+
+	const [atividades, setAtividades] = useState([]);
+	const handleAutoCompleteAtividade = (e) => buscar(`/atividades?nome=ik=${e.query}`).then(json).then(setAtividades);
+	
+
 	return (
 		<Panel header="Avaliação">
 			<PanelContent>
-				<InputText width={12} label="Avaliacao" value={avaliacao.texto} onChange={e => setAvaliacao({...avaliacao, texto: e.target.value})}/>
+				<AutoComplete width={8} field="nome" suggestions={turmas} completeMethod={handleAutoCompleteTurma} label="Turma" value={avaliacao.turma} onChange={e => setAvaliacao({...avaliacao, turma: e.value})}/>
+				<AutoComplete width={8} field="nome" suggestions={atividades} completeMethod={handleAutoCompleteAtividade} label="Atividade" value={avaliacao.atividade} onChange={e => setAvaliacao({...avaliacao, atividade: e.value})}/>				
+				<div className="p-grid p-ml-1 p-mt-2">
+					<Calendar  showTime hourFormat="24" width={4} label="Inicio" value={avaliacao.inicio} onChange={e => setAvaliacao({...avaliacao, inicio: e.value})}/>
+					<i className="pi pi-calendar"></i>
+					<Calendar showTime hourFormat="24" width={4} label="Fim" value={avaliacao.fim} onChange={e => setAvaliacao({...avaliacao, fim: e.value})}/>
+					<i className="pi pi-calendar"></i>
+				</div><br></br>
+				<div >
+					<InputText label="Valor da Avaliação" width={6} value={avaliacao.valor} onChange={e => setAvaliacao({...avaliacao, valor: e.target.value})}/>					
+				</div>
 			</PanelContent>
 			<PanelFooter>
 				<Button label="Salvar" icon="pi pi-fw pi-save" className="p-button-success" onClick={handleSalvar}/>
