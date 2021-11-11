@@ -15,15 +15,17 @@ import {Dropdown} from "../components/Dropdown";
 import {InputNumber} from "../components/InputNumber";
 import {Calendar} from "../components/Calendar";
 import {TabPanel, TabView} from "primereact/tabview";
+import { Image } from 'primereact/image';
+import na from '../img/naruto.jpg';
+import avatar from "../img/avatar/1.png";
 
 export const PageHome = withRouter((props) => {
 
 	const [usuarios, setUsuarios] = useState([]);
 	
 	return (
-		<div>	
-			
-			<div className="p-grid p-col-6">
+		<div className="p-grid">			
+			<div className="p-col-7">
 				<DataTable emptyMessage="Nenhum registro encontrado" value="" onRowDoubleClick={e => props.history.push(`/usuarios/${usuarios[e.index].id}`)}>
 					<Column header="Login" field="username"/>
 					<Column header="Nome" field="nome"/>
@@ -31,8 +33,8 @@ export const PageHome = withRouter((props) => {
 					<Column header="Email" field="email"/>
 				</DataTable>
 			</div>		
-			<div className="p-grid">
-
+			<div className="p-col-5">	
+				<img src={avatar} alt="Sem Texto" width="250"/>							
 			</div>
 		</div>
 		

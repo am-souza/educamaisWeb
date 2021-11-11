@@ -5,8 +5,11 @@ import {Button} from "primereact/button";
 import {InputText} from "../components/InputText";
 import {PanelContent} from "../components/PanelContent";
 import {PanelFooter} from "../components/PanelFooter";
-
+import { Image } from 'primereact/image'; 
 import "./Pages.scss";
+import l from "../img/logo.jpg"
+
+
 
 export function PageLogin(props) {
 	const [login, setLogin] = useState({
@@ -14,16 +17,23 @@ export function PageLogin(props) {
 		password: ""
 	});
 	return (
-		<div className="login-form">
-			<Panel header="Autenticação">
-				<PanelContent>
-					<InputText label="Login" width={12} value={login.username} onChange={e => setLogin({...login, username: e.target.value})}/>
-					<InputText type="password" label="Senha" width={12} value={login.password} onChange={e => setLogin({...login, password: e.target.value})}/>
-				</PanelContent>
-				<PanelFooter>
-					<Button icon="pi pi-sign-in" label="Login" onClick={() => handleLogin(login, props.onLoginSuccessful)} />
-				</PanelFooter>
-			</Panel>
+		<div className="p-grid">	
+			<div className="p-col-3 p-mt-4 p-offset-4">
+				<img src={l} alt="Sem Texto" width="250"/>
+			</div>		
+			<div className="p-col-12 p-align-center">
+				<div className="login-form">
+					<Panel header="Autenticação">
+						<PanelContent>
+							<InputText label="Login" width={12} value={login.username} onChange={e => setLogin({...login, username: e.target.value})}/>
+							<InputText type="password" label="Senha" width={12} value={login.password} onChange={e => setLogin({...login, password: e.target.value})}/>
+						</PanelContent>
+						<PanelFooter>
+							<Button icon="pi pi-sign-in" label="Login" onClick={() => handleLogin(login, props.onLoginSuccessful)} />
+						</PanelFooter>
+					</Panel>
+				</div>
+			</div>
 		</div>
 	);
 }

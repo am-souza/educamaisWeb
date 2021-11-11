@@ -16,13 +16,14 @@ import {EditCurso, PageCurso} from "./Curso";
 import {PageLoja} from "./Loja";
 import {PageInventario} from "./Inventario";
 import {Tag} from "primereact/tag";
+import { Image } from 'primereact/image'; 
 
 
 export const PageMain = withUser(withRouter(((props) => {
 	return (
 		<div>
 			
-			<div className="p-grid">
+			<div className="p-grid">				
 				<Menubar className="p-col-7" model={handleMenu(props)} end={<Button icon="pi pi-fw pi-power-off" label="Logout" onClick={handleLogout}/>}/>			
 				<Tag className="p-col-1 p-ml-5 p-mr-2" label="XP" icon="pi pi-flag" value={props.usuario.xp} style={{backgroundColor: "#2196F3", color: "#ffffff"}}>XP</Tag>
 				<Tag className="p-col-1 p-mr-2" label="Cash" icon="pi pi-dollar" value={props.usuario.cash} style={{backgroundColor: "#2196F3", color: "#ffffff"}}>CASH</Tag>
