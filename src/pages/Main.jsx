@@ -3,7 +3,7 @@ import {Menubar} from "primereact/menubar";
 import {Button} from "primereact/button";
 import {handleLogout, handleMenu, withUser} from "../utilidades/Auth";
 import {Route, Switch, withRouter} from "react-router-dom";
-import {PageHome} from "./Home";
+import {AvaliacaoAluno, PageHome} from "./Home";
 import {EditUsuario, PageUsuario} from "./Usuario";
 import {EditQuestao, PageQuestao} from "./Questao";
 import {EditAtividade, PageAtividade} from "./Atividade";
@@ -16,7 +16,7 @@ import {EditCurso, PageCurso} from "./Curso";
 import {PageLoja} from "./Loja";
 import {PageInventario} from "./Inventario";
 import {Tag} from "primereact/tag";
-import {PageAvaliacaoAluno} from "./AvaliacaoAluno";
+
 
 
 export const PageMain = withUser(withRouter(((props) => {
@@ -33,6 +33,7 @@ export const PageMain = withUser(withRouter(((props) => {
 
 			<Switch>
 				<Route exact path="/" component={PageHome}/>
+				<Route exact path="/:id" component={AvaliacaoAluno}/>
 				<Route exact path="/usuarios" component={PageUsuario}/>
 				<Route exact path="/usuarios/:id" component={EditUsuario}/>
 				<Route exact path="/questoes" component={PageQuestao}/>
@@ -51,7 +52,6 @@ export const PageMain = withUser(withRouter(((props) => {
 				<Route exact path="/cursos/:id" component={EditCurso}/>
 				<Route exact path="/loja" component={PageLoja}/>
 				<Route exact path="/inventario" component={PageInventario}/>				
-				<Route exact path="/avaliacaoaluno" component={PageAvaliacaoAluno}/>	
 			</Switch>
 		</div>
 	);

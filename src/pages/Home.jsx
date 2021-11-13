@@ -8,6 +8,9 @@ import { useEffect } from "react/cjs/react.development";
 import {buscar} from "../utilidades/Fetch";
 import moment from "moment";
 import {json} from "../utilidades/Fetch";
+import {PanelContent} from "../components/PanelContent";
+import {InputText} from "../components/InputText";
+import {Panel} from "primereact/panel";
 
 export const PageHome = withUser(withRouter((props) => {
 
@@ -25,7 +28,7 @@ export const PageHome = withUser(withRouter((props) => {
 	return (
 		<div className="p-grid">			
 			<div className="p-col-7">
-				<DataTable emptyMessage="Nenhum registro encontrado" value={avaliacoes} onRowDoubleClick={e => props.history.push(`/avaliacaoaluno/${avaliacoes[e.index].id}`)}>
+				<DataTable emptyMessage="Nenhum registro encontrado" value={avaliacoes} onRowDoubleClick={e => props.history.push(`/${avaliacoes[e.index].id}`)}>
 					<Column header="Atividade" field="atividade.nome"/>
 					<Column header="Turma" field="turma.nome"/>
 					<Column header="Início" body={a => moment(a.inicio).format("DD/MM/YYYY HH:mm")}/>
@@ -40,3 +43,16 @@ export const PageHome = withUser(withRouter((props) => {
 		
 	);
 }));
+
+export const AvaliacaoAluno = withRouter((props) => {
+	
+	return (
+		<Panel header="Avaliação">
+			<PanelContent>
+				<div >
+					<InputText label="Valor da Avaliação" width={6} value="" />					
+				</div>
+			</PanelContent>			
+		</Panel>
+	);
+});
