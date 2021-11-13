@@ -28,7 +28,7 @@ export const PageHome = withUser(withRouter((props) => {
 	return (
 		<div className="p-grid">			
 			<div className="p-col-7">
-				<DataTable emptyMessage="Nenhum registro encontrado" value={avaliacoes} onRowDoubleClick={e => props.history.push(`/${avaliacoes[e.index].id}`)}>
+				<DataTable emptyMessage="Nenhum registro encontrado" value={avaliacoes} onRowDoubleClick={e => props.history.push(`/avaliacaoaluno/${avaliacoes[e.index].id}`)}>
 					<Column header="Atividade" field="atividade.nome"/> 								
 					<Column header="Turma" field="turma.nome"/>
 					<Column header="Início" body={a => moment(a.inicio).format("DD/MM/YYYY HH:mm")}/>
@@ -43,9 +43,13 @@ export const PageHome = withUser(withRouter((props) => {
 		
 	);
 }));
-
+/*
 export const AvaliacaoAluno = withRouter((props) => {
 
+	const  id  = props.match.params.id;
+
+	const [avaliacao, setAvaliacao] = useState([]);
+	
 	function newAvaliacao() {
 		return {
 			_key: Math.random(),
@@ -58,18 +62,19 @@ export const AvaliacaoAluno = withRouter((props) => {
 		};
 	}
 	
-	
-	const [avaliacao, setAvaliacao] = useState(newAvaliacao());
 
-	//useEffect(() => id !== "0" && buscar(`/avaliacoes/${id}`).then(json).then(setAvaliacao), [id]);
+	useEffect(() => id !== "0" && buscar(`/avaliacoes/${id}`).then(json).then(setAvaliacao), [id]);
 	
 	return (
 		<Panel header="Avaliação">
 			<PanelContent>
 				<div >
 					<InputText label="Valor da Avaliação" width={6} value={props.match.params.id} />					
+					<InputText label="Valor da Avaliação" width={6} value={id} />
+					<InputText label="Valor da Avaliação" width={6} value={avaliacao.atividade.id} />					
 				</div>
 			</PanelContent>			
 		</Panel>
 	);
 });
+*/

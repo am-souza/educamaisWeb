@@ -16,6 +16,7 @@ import {EditCurso, PageCurso} from "./Curso";
 import {PageLoja} from "./Loja";
 import {PageInventario} from "./Inventario";
 import {Tag} from "primereact/tag";
+import {PageAvaliacaoAluno} from "./AvaliacaoAluno";
 
 
 
@@ -33,7 +34,7 @@ export const PageMain = withUser(withRouter(((props) => {
 
 			<Switch>
 				<Route exact path="/" component={PageHome}/>
-				<Route exact path="/:id" component={AvaliacaoAluno}/>
+				<Route exact path="/avaliacaoaluno/:id" component={PageAvaliacaoAluno}/>
 				<Route exact path="/usuarios" component={PageUsuario}/>
 				<Route exact path="/usuarios/:id" component={EditUsuario}/>
 				<Route exact path="/questoes" component={PageQuestao}/>
