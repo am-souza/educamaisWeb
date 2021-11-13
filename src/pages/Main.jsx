@@ -16,6 +16,7 @@ import {EditCurso, PageCurso} from "./Curso";
 import {PageLoja} from "./Loja";
 import {PageInventario} from "./Inventario";
 import {Tag} from "primereact/tag";
+import {PageAvaliacaoAluno} from "./AvaliacaoAluno";
 
 
 export const PageMain = withUser(withRouter(((props) => {
@@ -50,6 +51,7 @@ export const PageMain = withUser(withRouter(((props) => {
 				<Route exact path="/cursos/:id" component={EditCurso}/>
 				<Route exact path="/loja" component={PageLoja}/>
 				<Route exact path="/inventario" component={PageInventario}/>				
+				<Route exact path="/avaliacaoaluno" component={PageAvaliacaoAluno}/>	
 			</Switch>
 		</div>
 	);

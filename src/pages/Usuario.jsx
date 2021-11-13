@@ -64,6 +64,7 @@ export const PageUsuario = withRouter((props) => {
 			</Panel>
 			<Spacer/>
 			<DataTable emptyMessage="Nenhum registro encontrado" value={usuarios} onRowDoubleClick={e => props.history.push(`/usuarios/${usuarios[e.index].id}`)}>
+				<Column header="ID" field="id"/>
 				<Column header="Login" field="username"/>
 				<Column header="Nome" field="nome"/>
 				<Column header="Perfil" field="perfil"/>				

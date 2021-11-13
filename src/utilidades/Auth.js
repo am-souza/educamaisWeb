@@ -27,14 +27,14 @@ export function handleMenu(props) {
 			cadastros.push({label: "Cursos", icon: "pi pi-fw pi-book", command: () => props.history.push("/cursos")});
 			// eslint-disable-next-line
 		case "TUTOR":
+			cadastros.push({label: "Avaliações", icon: "pi pi-fw pi-file", command: () => props.history.push("/avaliacoes")});
 			cadastros.push({label: "Turmas", icon: "pi pi-fw pi-users", command: () => props.history.push("/turmas")});
 			cadastros.push({label: "Atividades", icon: "pi pi-fw pi-clone", command: () => props.history.push("/atividades")});
 			cadastros.push({label: "Questões", icon: "pi pi-fw pi-question", command: () => props.history.push("/questoes")});
 			//cadastros.push({label: "Respostas", icon: "pi pi-fw pi-list", command: () => props.history.push("/respostas")});
 			cadastros.push({label: "Matérias", icon: "pi pi-fw pi-inbox", command: () => props.history.push("/materias")});
 			// eslint-disable-next-line
-		case "ALUNO":
-			cadastros.push({label: "Avaliações", icon: "pi pi-fw pi-file", command: () => props.history.push("/avaliacoes")});
+		case "ALUNO":			
 			cadastros.push({label: "Loja", icon: "pi pi-shopping-cart", command: () => props.history.push("/loja")});
 			cadastros.push({label: "Inventario", icon: "pi pi-table", command: () => props.history.push("/inventario")});
 			cadastros.push({label: "Home", icon: "pi pi-sun", command: () => props.history.push("/")});
