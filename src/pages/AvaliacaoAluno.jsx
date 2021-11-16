@@ -1,49 +1,67 @@
 import {Panel} from "primereact/panel";
-import {DataTable} from "primereact/datatable";
-import React, {useEffect, useState, Row} from "react";
-import {Column} from "primereact/column/column.cjs";
-import {Spacer} from "../components/Spacer";
-import {buscar, excluir, json, salvar} from "../utilidades/Fetch";
-import {InputText} from "../components/InputText";
+import React, {useEffect, useState} from "react";
+import {buscar, json, salvar} from "../utilidades/Fetch";
 import {PanelContent} from "../components/PanelContent";
-import {useParams, withRouter} from "react-router-dom";
-import {Button} from "primereact/button";
-import {PanelFooter} from "../components/PanelFooter";
-import moment from "moment";
-import {AutoComplete} from "../components/AutoComplete";
-import {Calendar} from "../components/Calendar";
+import {withRouter} from "react-router-dom";
 import {Checkbox} from "primereact/checkbox";
-import {byKeyOrId} from "../utilidades/FilterUtils";
+import {withUser} from "../utilidades/Auth";
+import {PanelFooter} from "../components/PanelFooter";
+import {Button} from "primereact/button";
 
-
-export const PageAvaliacaoAluno = withRouter((props) => {
-
-	const  id  = props.match.params.id;
-
-	const [avaliacao, setAvaliacao] = useState([]);  
-
-	useEffect(() => id !== "0" && buscar(`/avaliacoes/${id}`).then(json).then(setAvaliacao), [id]);
-
-    const atividade = avaliacao.atividade;
-    const questoes = atividade.questoes;
-   
+export const PageAvaliacaoAluno = withUser(withRouter(props => {
+	const id = props.match.params.id;
+	const [avaliacao, setAvaliacao] = useState({
+		avaliacao: null,
+		aluno: null,
+		nota: 0,
+		respostas: []
+	});
+	useEffect(() => {
+		buscar(`/avaliacoes/${id}`).then(json).then(avaliacao => {
+			setAvaliacao({
+				avaliacao,
+				aluno: props.usuario,
+				respostas: avaliacao.atividade.questoes.map(questao => ({questao, alternativaEscolhida: null})),
+				nota: 0
+			});
+		});
+	}, [id, props.usuario]);
+	function printQuestaoEscolha(questao, questaoEscolha) {
+		return (
+			<div key={questaoEscolha.id}>
+				<Checkbox onChange={() => {
+					avaliacao.respostas.filter(r => r.questao.id === questao.id).forEach(r => {
+						r.alternativaEscolhida = {id: questaoEscolha.id}
+					});
+					setAvaliacao({...avaliacao});
+				}} checked={avaliacao.respostas.filter(r => r.questao.id === questao.id).some(r => r.alternativaEscolhida?.id === questaoEscolha.id)}/>
+				{questaoEscolha.texto}
+			</div>
+		);
+	}
+	function printQuestao(questao) {
+		return (
+			<div key={questao.id}>
+				<div>{questao.texto}</div>
+				<div>
+					{questao.escolhas.map(questaoEscolha => printQuestaoEscolha(questao, questaoEscolha))}
+				</div>
+			</div>
+		);
+	}
+	function handleSave() {
+		salvar("/avaliacoesalunos", avaliacao).then(() => {
+			props.history.push("/");
+		});
+	}
 	return (
 		<Panel header="Prova">
 			<PanelContent>
-            <DataTable emptyMessage="Nenhum registro encontrado" value={questoes}>
-				<Column className="p-col-1" header="Questão" field="texto"/>
-                <Column header="Resposta" body={r => (
-                            
-							<Row value={r.texto} onChange={e => {
-								questoes.escolhas.filter(q => byKeyOrId(q, r)).forEach(r => r.texto = e.target.value);
-							}}/>
-						)}/>
-						<Column style={{textAlign: "center", width: "6em"}} header="Correta?" body={r => (
-							<Checkbox checked={r.correta}/>
-						)}/>	
-                                		
-			</DataTable>
-			</PanelContent>			
+				{avaliacao.avaliacao?.atividade.questoes.map(printQuestao)}
+			</PanelContent>
+			<PanelFooter>
+				<Button icon="pi pi-save" label="Concluir" onClick={handleSave}/>
+			</PanelFooter>
 		</Panel>
 	);
-});
+}));

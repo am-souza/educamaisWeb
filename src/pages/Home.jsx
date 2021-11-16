@@ -4,13 +4,9 @@ import {Column} from "primereact/column/column.cjs";
 import {withRouter} from "react-router-dom";
 import {withUser} from "../utilidades/Auth";
 import avatar from "../img/avatar/1.png";
-import { useEffect } from "react/cjs/react.development";
-import {buscar} from "../utilidades/Fetch";
+import {useEffect} from "react/cjs/react.development";
+import {buscar, json} from "../utilidades/Fetch";
 import moment from "moment";
-import {json} from "../utilidades/Fetch";
-import {PanelContent} from "../components/PanelContent";
-import {InputText} from "../components/InputText";
-import {Panel} from "primereact/panel";
 
 export const PageHome = withUser(withRouter((props) => {
 
@@ -18,10 +14,17 @@ export const PageHome = withUser(withRouter((props) => {
 	
 	useEffect(() => {
 		buscar(`/turmas?alunos.id==${props.usuario.id}`).then(json).then(turmas => {
-			let data = moment().format("YYYY-MM-DDTHH:mm:ss");
-			buscar(`/avaliacoes?turma.id=in=(${turmas.map(t => t.id).join(",")});inicio=le=${data};fim=ge=${data}`).then(json).then(avaliacoes => {
-				setAvaliacoes(avaliacoes);
-			});
+			if (turmas.length) {
+				let data = moment().format("YYYY-MM-DDTHH:mm:ss");
+				buscar(`/avaliacoes?turma.id=in=(${turmas.map(t => t.id).join(",")});inicio=le=${data};fim=ge=${data}`).then(json).then(avaliacoes => {
+					if (avaliacoes.length) {
+						buscar(`/avaliacoesalunos?avaliacao.id=in=(${avaliacoes.map(a => a.id).join(",")})`).then(json).then(avaliacoesAlunos => {
+							const naoRespondidas = avaliacoes.filter(a => !avaliacoesAlunos.some(r => r.avaliacao.id === a.id));
+							setAvaliacoes(naoRespondidas);
+						});
+					}
+				});
+			}
 		});
 	}, [props.usuario.id]);
 
@@ -43,38 +46,3 @@ export const PageHome = withUser(withRouter((props) => {
 		
 	);
 }));
-/*
-export const AvaliacaoAluno = withRouter((props) => {
-
-	const  id  = props.match.params.id;
-
-	const [avaliacao, setAvaliacao] = useState([]);
-	
-	function newAvaliacao() {
-		return {
-			_key: Math.random(),
-			id: null,
-			atividade: null,
-			turma: null,
-			inicio: moment().format("YYYY-MM-DDTHH:mm:ss"),
-			fim: moment().format("YYYY-MM-DDTHH:mm:ss"),
-			valor:"",
-		};
-	}
-	
-
-	useEffect(() => id !== "0" && buscar(`/avaliacoes/${id}`).then(json).then(setAvaliacao), [id]);
-	
-	return (
-		<Panel header="Avaliação">
-			<PanelContent>
-				<div >
-					<InputText label="Valor da Avaliação" width={6} value={props.match.params.id} />					
-					<InputText label="Valor da Avaliação" width={6} value={id} />
-					<InputText label="Valor da Avaliação" width={6} value={avaliacao.atividade.id} />					
-				</div>
-			</PanelContent>			
-		</Panel>
-	);
-});
-*/
