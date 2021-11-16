@@ -2,11 +2,14 @@ import {Panel} from "primereact/panel";
 import React, {useEffect, useState} from "react";
 import {buscar, json, salvar} from "../utilidades/Fetch";
 import {PanelContent} from "../components/PanelContent";
+import {Spacer} from "../components/Spacer";
 import {withRouter} from "react-router-dom";
 import {Checkbox} from "primereact/checkbox";
 import {withUser} from "../utilidades/Auth";
 import {PanelFooter} from "../components/PanelFooter";
 import {Button} from "primereact/button";
+import { Column } from "primereact/column/column.cjs";
+import { DataTable } from "primereact/datatable";
 
 export const PageAvaliacaoAluno = withUser(withRouter(props => {
 	const id = props.match.params.id;
@@ -40,12 +43,12 @@ export const PageAvaliacaoAluno = withUser(withRouter(props => {
 		);
 	}
 	function printQuestao(questao) {
-		return (
-			<div key={questao.id}>
-				<div>{questao.texto}</div>
+		return (			
+			<div className="p-d-flex p-flex-column" key={questao.id}>				
+				<div className="p-col-12"><h3>{questao.texto}</h3></div>				
 				<div>
 					{questao.escolhas.map(questaoEscolha => printQuestaoEscolha(questao, questaoEscolha))}
-				</div>
+				</div>				
 			</div>
 		);
 	}
@@ -56,8 +59,10 @@ export const PageAvaliacaoAluno = withUser(withRouter(props => {
 	}
 	return (
 		<Panel header="Prova">
-			<PanelContent>
-				{avaliacao.avaliacao?.atividade.questoes.map(printQuestao)}
+			<PanelContent>	
+				<div>					
+					{avaliacao.avaliacao?.atividade.questoes.map(printQuestao)}							
+				</div>			
 			</PanelContent>
 			<PanelFooter>
 				<Button icon="pi pi-save" label="Concluir" onClick={handleSave}/>
