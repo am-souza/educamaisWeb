@@ -18,7 +18,7 @@ export const PageHome = withUser(withRouter((props) => {
 				let data = moment().format("YYYY-MM-DDTHH:mm:ss");
 				buscar(`/avaliacoes?turma.id=in=(${turmas.map(t => t.id).join(",")});inicio=le=${data};fim=ge=${data}`).then(json).then(avaliacoes => {
 					if (avaliacoes.length) {
-						buscar(`/avaliacoesalunos?aluno.id==${props.usuario.id};avaliacao.id=in=(${avaliacoes.map(a => a.id).join(",")})`).then(json).then(avaliacoesAlunos => {
+						buscar(`/avaliacoesalunos?avaliacao.id=in=(${avaliacoes.map(a => a.id).join(",")})`).then(json).then(avaliacoesAlunos => {
 							const naoRespondidas = avaliacoes.filter(a => !avaliacoesAlunos.some(r => r.avaliacao.id === a.id));
 							setAvaliacoes(naoRespondidas);
 						});
