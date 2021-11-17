@@ -3,11 +3,11 @@ import {Menubar} from "primereact/menubar";
 import {Button} from "primereact/button";
 import {handleLogout, handleMenu, withUser} from "../utilidades/Auth";
 import {Route, Switch, withRouter} from "react-router-dom";
-import {PageHome} from "./Home";
+import {AvaliacaoAluno, PageHome} from "./Home";
 import {EditUsuario, PageUsuario} from "./Usuario";
 import {EditQuestao, PageQuestao} from "./Questao";
 import {EditAtividade, PageAtividade} from "./Atividade";
-import {EditAvaliacao, PageAvaliacao} from "./Avaliacao";
+import {PageAvaliacao, EditAvaliacao} from "./Avaliacao";
 import {EditTurma, PageTurma} from "./Turma";
 import {Spacer} from "../components/Spacer";
 import {EditRespostas, PageRespostas} from "./Respostas";
@@ -17,6 +17,8 @@ import {PageLoja} from "./Loja";
 import {PageInventario} from "./Inventario";
 import {Tag} from "primereact/tag";
 import {PageAvaliacaoAluno} from "./AvaliacaoAluno";
+
+
 
 export const PageMain = withUser(withRouter(((props) => {
 	return (

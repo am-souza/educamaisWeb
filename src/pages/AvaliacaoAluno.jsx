@@ -19,7 +19,10 @@ export const PageAvaliacaoAluno = withUser(withRouter(props => {
 		respostas: []
 	});
 
-	//const [av2, setAv2] = useState([]);
+//	const [av2, setAv2] = useState({
+//		avaliacaoaluno: null,
+//	});
+//const [av2, setAv2] = useState([]);
 	
 
 	useEffect(() => {
@@ -56,6 +59,11 @@ export const PageAvaliacaoAluno = withUser(withRouter(props => {
 		);
 	}
 	function handleSave() {
+		salvar("/avaliacoesalunos", avaliacao).then(() => {
+			props.history.push("/");
+		});
+	}
+	/*	
 		const avaliacaoaluno = {
 			avaliacao: avaliacao.avaliacao,
 			aluno: props.usuario,
@@ -63,19 +71,21 @@ export const PageAvaliacaoAluno = withUser(withRouter(props => {
 		};
 		console.log(avaliacaoaluno);
 		salvar("/avaliacoesalunos", avaliacaoaluno);	
-	/*	const [avaliacaoalunoresposta, setAvaliacaoAlunoResposta] = useState({
+		const [avaliacaoalunoresposta, setAvaliacaoAlunoResposta] = useState({
 			avaliacaoaluno: null,
 			questao: null,
 			alternativaEscolhida: null,
-		});*/		
-		const av2 = (buscar(`/avaliacoesalunos?avaliacao.id==${avaliacaoaluno.avaliacao.id};aluno.id==${props.usuario.id}`).then(json));
-		console.log(av2[0]);	
+		});
+		const a = buscar(`/avaliacoesalunos?avaliacao.id==${avaliacaoaluno.avaliacao.id};aluno.id==${props.usuario.id}`).then(json); 		
+		//setAv2({...av2, avaliacaoaluno = buscar(`/avaliacoesalunos?avaliacao.id==${avaliacaoaluno.avaliacao.id};aluno.id==${props.usuario.id}`).then(json)});
+		//av2.avaliacaoaluno = buscar(`/avaliacoesalunos?avaliacao.id==${avaliacaoaluno.avaliacao.id};aluno.id==${props.usuario.id}`).then(json);
+		console.log(av2);	
 		
 		
 		//.then(() => {
 		//props.history.push("/");
 		//});
-	}
+	}*/
 	return (
 		<Panel header="Prova">
 			<PanelContent>	

@@ -36,7 +36,7 @@ export function handleMenu(props) {
 			// eslint-disable-next-line
 		case "ALUNO":			
 			cadastros.push({label: "Loja", icon: "pi pi-shopping-cart", command: () => props.history.push("/loja")});
-			cadastros.push({label: "Inventario", icon: "pi pi-table", command: () => props.history.push("/inventario")});
+			cadastros.push({label: "Álbum", icon: "pi pi-table", command: () => props.history.push("/inventario")});
 			cadastros.push({label: "Home", icon: "pi pi-sun", command: () => props.history.push("/")});
 			// eslint-disable-next-line
 		default:

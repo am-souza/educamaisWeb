@@ -37,11 +37,6 @@ export default function App() {
 			</UserProvider>
 		);
 	} else {
-		return <PageLogin onLoginSuccessful={usuario => {
-			setUsuario(usuario);
-			if (usuario.perfil === "ALUNO") {
-				window.location.replace("/");
-			}
-		}}/>;
+		return <PageLogin onLoginSuccessful={setUsuario}/>;
 	}
 }
