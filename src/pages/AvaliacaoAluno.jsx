@@ -2,14 +2,13 @@ import {Panel} from "primereact/panel";
 import React, {useEffect, useState} from "react";
 import {buscar, json, salvar} from "../utilidades/Fetch";
 import {PanelContent} from "../components/PanelContent";
-import {Spacer} from "../components/Spacer";
 import {withRouter} from "react-router-dom";
 import {Checkbox} from "primereact/checkbox";
 import {withUser} from "../utilidades/Auth";
 import {PanelFooter} from "../components/PanelFooter";
 import {Button} from "primereact/button";
-import { Column } from "primereact/column/column.cjs";
-import { DataTable } from "primereact/datatable";
+
+
 
 export const PageAvaliacaoAluno = withUser(withRouter(props => {
 	const id = props.match.params.id;
@@ -19,6 +18,10 @@ export const PageAvaliacaoAluno = withUser(withRouter(props => {
 		nota: 0,
 		respostas: []
 	});
+
+	//const [av2, setAv2] = useState([]);
+	
+
 	useEffect(() => {
 		buscar(`/avaliacoes/${id}`).then(json).then(avaliacao => {
 			setAvaliacao({
@@ -53,9 +56,25 @@ export const PageAvaliacaoAluno = withUser(withRouter(props => {
 		);
 	}
 	function handleSave() {
-		salvar("/avaliacoesalunos", avaliacao).then(() => {
-			props.history.push("/");
-		});
+		const avaliacaoaluno = {
+			avaliacao: avaliacao.avaliacao,
+			aluno: props.usuario,
+			nota: 0,					
+		};
+		console.log(avaliacaoaluno);
+		salvar("/avaliacoesalunos", avaliacaoaluno);	
+	/*	const [avaliacaoalunoresposta, setAvaliacaoAlunoResposta] = useState({
+			avaliacaoaluno: null,
+			questao: null,
+			alternativaEscolhida: null,
+		});*/		
+		const av2 = (buscar(`/avaliacoesalunos?avaliacao.id==${avaliacaoaluno.avaliacao.id};aluno.id==${props.usuario.id}`).then(json));
+		console.log(av2[0]);	
+		
+		
+		//.then(() => {
+		//props.history.push("/");
+		//});
 	}
 	return (
 		<Panel header="Prova">
