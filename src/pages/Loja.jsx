@@ -1,6 +1,8 @@
 import React from "react";
 import {withRouter} from "react-router-dom";
+import {withUser} from "../utilidades/Auth";
 import {DataView} from "primereact/dataview";
+import {buscar, json, salvar} from "../utilidades/Fetch";
 
 import img1 from "../img/avatar/1.png";
 import img2 from "../img/avatar/2.png";
@@ -68,18 +70,26 @@ const images = [
 
 ];
 
-export const PageLoja = withRouter((props) => {
+
+export const PageLoja = withUser(withRouter(props => {
+   
+    function comprar(item){/*
+        salvar("/inventarios", add).then(json).then(loja => {
+            props.history.push("/");
+        });*/
+    }
+
     function itemTemplate(image) {
         return (
             <div className="p-col-2 imagem-template">
                 <div>{image.id}</div>
                 <div><img className="imagem-loja" src={image.picture} alt=""/></div>
                 <div>Cash: {image.preco}</div>
-                <Button label="Comprar" icon="pi pi-dollar"/>
+                <Button label="Comprar" icon="pi pi-dollar" onClick={comprar(image.id)}/>
             </div>
-        );
-    }
+        );}
+
 	return (
         <DataView layout="grid" value={images} itemTemplate={itemTemplate}/>
-    );
-});
+    );       
+}));

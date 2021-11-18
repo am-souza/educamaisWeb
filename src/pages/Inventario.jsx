@@ -1,7 +1,6 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {withRouter} from "react-router-dom";
 import {DataView} from "primereact/dataview";
-
 
 import img1 from "../img/avatar/1.png";
 import img2 from "../img/avatar/2.png";
@@ -36,7 +35,7 @@ import img30 from "../img/avatar/30.png";
 import { Button } from "primereact/button";
 import { Panel } from "primereact/panel";
 import { Image } from 'primereact/image';
-import { useEffect, useState } from "react/cjs/react.development";
+
 
 const images = [
     {id: 1, picture: img1, preco: 20},
@@ -72,24 +71,28 @@ const images = [
 
 ];
 
-const listaitem = []
 
 export const PageInventario = withRouter((props) => {
     
-    function buscaritem (){  
+    const [listaitem, setListaitem] = useState([]);
+
+    const list = [];
+
+    function buscaritem (){
         const teste = [
-            {id: 30},
-            {id: 29},
-            {id: 27},
+            {id: 1},
+            {id: 2},
+            {id: 3},
             {id: 25},
-        ];     
+        ];
         teste.forEach(t => {
             images.forEach(i => {
-                if (t.id === i.id){                  
-                    listaitem.push(i);                    
+                if (t.id === i.id){
+                    list.push(i);
                 }
-            });    
-        });       
+            });
+        });
+        setListaitem(list);
     }
 
 
@@ -106,15 +109,11 @@ export const PageInventario = withRouter((props) => {
         buscaritem();    
     }, []);
 
-    console.log(listaitem[1]);
+    console.log(listaitem);
 
 	return (
-		<Panel header="Figurinhas">
-        	<DataView layout="grid" value={images} itemTemplate={itemTemplate}/>             
-            {listaitem.map(item =>{
-                <Image src={item.picture} alt="Image Text" />
-            })}
-             
+		<Panel header="Figurinhas">        	
+            <DataView layout="grid" value={listaitem} itemTemplate={itemTemplate}/>            
 		</Panel>
     );
 });
