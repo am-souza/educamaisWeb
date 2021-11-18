@@ -36,6 +36,7 @@ import img30 from "../img/avatar/30.png";
 import { Button } from "primereact/button";
 import { Panel } from "primereact/panel";
 import { Image } from 'primereact/image';
+import { useEffect, useState } from "react/cjs/react.development";
 
 const images = [
     {id: 1, picture: img1, preco: 20},
@@ -71,7 +72,27 @@ const images = [
 
 ];
 
+const listaitem = []
+
 export const PageInventario = withRouter((props) => {
+    
+    function buscaritem (){  
+        const teste = [
+            {id: 30},
+            {id: 29},
+            {id: 27},
+            {id: 25},
+        ];     
+        teste.forEach(t => {
+            images.forEach(i => {
+                if (t.id === i.id){                  
+                    listaitem.push(i);                    
+                }
+            });    
+        });       
+    }
+
+
 	function itemTemplate(image) {
         return (		
 			<div className="p-col-2 imagem-template">
@@ -80,9 +101,20 @@ export const PageInventario = withRouter((props) => {
 			</div>			
         );
     }
+
+    useEffect(() => {
+        buscaritem();    
+    }, []);
+
+    console.log(listaitem[1]);
+
 	return (
 		<Panel header="Figurinhas">
-        	<DataView layout="grid" value={images} itemTemplate={itemTemplate}/>                        
+        	<DataView layout="grid" value={images} itemTemplate={itemTemplate}/>             
+            {listaitem.map(item =>{
+                <Image src={item.picture} alt="Image Text" />
+            })}
+             
 		</Panel>
     );
 });

@@ -17,7 +17,7 @@ export function PageLogin(props) {
 	});
 	return (
 		<div className="p-grid">	
-			<div className="p-col-5 p-mt-6 p-offset-4 ">
+			<div className="p-col-6 p-mt-6 p-offset-5 ">
 				<img src={l} alt="Sem Texto" width="300"/>
 			</div>		
 			<div className="p-col-12 p-align-center">
