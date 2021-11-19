@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {withRouter} from "react-router-dom";
 import {DataView} from "primereact/dataview";
+import {withUser} from "../utilidades/Auth";
+import {buscar, excluir, json, salvar} from "../utilidades/Fetch";
 
 import img1 from "../img/avatar/1.png";
 import img2 from "../img/avatar/2.png";
@@ -35,7 +37,6 @@ import img30 from "../img/avatar/30.png";
 import { Button } from "primereact/button";
 import { Panel } from "primereact/panel";
 import { Image } from 'primereact/image';
-
 
 const images = [
     {id: 1, picture: img1, preco: 20},
@@ -72,29 +73,9 @@ const images = [
 ];
 
 
-export const PageInventario = withRouter((props) => {
+export const PageInventario = withUser(withRouter((props) => {
     
-    const [listaitem, setListaitem] = useState([]);
-
-    const list = [];
-
-    function buscaritem (){
-        const teste = [
-            {id: 1},
-            {id: 2},
-            {id: 3},
-            {id: 25},
-        ];
-        teste.forEach(t => {
-            images.forEach(i => {
-                if (t.id === i.id){
-                    list.push(i);
-                }
-            });
-        });
-        setListaitem(list);
-    }
-
+    const [lista, setLista] = useState([]);
 
 	function itemTemplate(image) {
         return (		
@@ -106,15 +87,14 @@ export const PageInventario = withRouter((props) => {
     }
 
     useEffect(() => {
-        buscaritem();    
-    }, []);
+        buscar(`/inventarios?usuario.id==${props.usuario.id}`).then(json).then(setLista);
+    }, []); 
 
-    console.log(listaitem);
+    const imgs = images.filter(i => lista.some(l => l.itens.some(x => x.id === i.id)));
 
 	return (
 		<Panel header="Figurinhas">        	
-            <DataView layout="grid" value={listaitem} itemTemplate={itemTemplate}/>            
+            <DataView layout="grid" value={imgs} itemTemplate={itemTemplate} emptyMessage="Nenhum registro encontrado"/>            
 		</Panel>
     );
-});
-
+}));

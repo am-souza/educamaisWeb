@@ -3,6 +3,9 @@ import {withRouter} from "react-router-dom";
 import {withUser} from "../utilidades/Auth";
 import {DataView} from "primereact/dataview";
 import {buscar, json, salvar} from "../utilidades/Fetch";
+import { InputNumber } from 'primereact/inputnumber';
+import { Button } from "primereact/button";
+import { useState } from "react/cjs/react.development";
 
 import img1 from "../img/avatar/1.png";
 import img2 from "../img/avatar/2.png";
@@ -34,7 +37,7 @@ import img27 from "../img/avatar/27.png";
 import img28 from "../img/avatar/28.png";
 import img29 from "../img/avatar/29.png";
 import img30 from "../img/avatar/30.png";
-import { Button } from "primereact/button";
+
 
 const images = [
     {id: 1, picture: img1, preco: 20},
@@ -72,24 +75,43 @@ const images = [
 
 
 export const PageLoja = withUser(withRouter(props => {
+
+    const [add, setAdd] = useState({
+        aluno: props.usuario,
+        iditem: null,
+    });
    
-    function comprar(item){/*
-        salvar("/inventarios", add).then(json).then(loja => {
-            props.history.push("/");
-        });*/
+    function comprar(item){        
+
+        setAdd(add, {iditem: item});
+
+        console.log(add);
+
+        salvar("/inventarios", add).then(json).then(loja => {            
+        });
     }
 
     function itemTemplate(image) {
         return (
-            <div className="p-col-2 imagem-template">
-                <div>{image.id}</div>
+            <div className="p-col-3 imagem-template">
+                <div><h4>Número Figurinha: {image.id}</h4></div>
                 <div><img className="imagem-loja" src={image.picture} alt=""/></div>
-                <div>Cash: {image.preco}</div>
-                <Button label="Comprar" icon="pi pi-dollar" onClick={comprar(image.id)}/>
+                <div><h4>Cash: {image.preco}</h4></div>               
             </div>
         );}
 
 	return (
-        <DataView layout="grid" value={images} itemTemplate={itemTemplate}/>
+        <div className="p-grid">
+            <div className="p-col-8">
+                <DataView layout="grid" value={images} itemTemplate={itemTemplate}/>
+            </div>
+            <div className="p-col-4 p-float-4">
+                <h3>Insira Número da Figura</h3>
+                <InputNumber value={add.iditem} onValueChange={e => setAdd({...add, iditem: e.value})} />
+                <br />
+                <Button label="Comprar" icon="pi pi-dollar" />
+            </div>
+        </div>      
+
     );       
 }));

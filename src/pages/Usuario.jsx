@@ -28,6 +28,15 @@ function newUsuario() {
 	};
 }
 
+export function newInventario() {
+	return {
+		_key: Math.random(),
+		id: null,
+		usuario: null,
+		itens: []
+	};
+}
+
 export const PageUsuario = withRouter((props) => {
 	const [usuarios, setUsuarios] = useState([]);
 	const [params, setParams] = useState({
@@ -75,11 +84,12 @@ export const PageUsuario = withRouter((props) => {
 });
 
 export const EditUsuario = withRouter((props) => {
+
 	const { id } = useParams();
 	const [usuario, setUsuario] = useState(newUsuario());
-	useEffect(() => id !== "0" && buscar(`/usuarios/${id}`).then(json).then(setUsuario), [id]);
+	useEffect(() => id !== "0" && buscar(`/usuarios/${id}`).then(json).then(setUsuario), [id]);	
 	const handleVoltar = () => props.history.push("/usuarios");
-	const handleSalvar = () => salvar("/usuarios", usuario).then(handleVoltar);
+	const handleSalvar = () => salvar("/usuarios", usuario).then(handleVoltar);		
 	const handleExcluir = () => excluir(`/usuarios/${usuario.id}`).then(handleVoltar);	
 	return (
 		<Panel header="Usuário">
