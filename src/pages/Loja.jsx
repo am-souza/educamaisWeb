@@ -74,9 +74,6 @@ const images = [
 
 ];
 
-
-
-
 export const PageLoja = withUser(withRouter(props => {
 
     const [inventario, setInventario] = useState([]);
@@ -88,7 +85,7 @@ export const PageLoja = withUser(withRouter(props => {
 
     const item = images.filter(i => i.id === iditem);
   
-    function verificaCash(item){
+    function verificaCash(){
         
         if(item.some(i => i.preco <= props.usuario.cash)){
 
@@ -97,21 +94,25 @@ export const PageLoja = withUser(withRouter(props => {
                 nome: (item[0].id).toString(),
                 valor: item[0].preco,
             }
-
+           
             console.log(add);
             console.log(inventario);
-          //  inventario.filter(i => i.itens.push(add));
-           // inventario[0].itens.push(add);
+
+            inventario.filter(i => i.itens.push(add));           
             console.log("Aprovado");
-            console.log(inventario);
+         
         }
         else{
             console.log("Cash insuficiente");            
         }           
     }
 
-    const handleSalvar = () => salvar("/inventarios", inventario).then(handleVoltar);
-    const handleVoltar = () => props.history.push("/usuarios");
+    const handleSalvar = () =>{ 
+        verificaCash();
+        console.log(inventario[0]);
+        salvar("/inventarios", inventario[0]).then(handleVoltar);        
+    }
+    const handleVoltar = () => props.history.push("/loja");
    
 
     function itemTemplate(image) {
@@ -131,7 +132,7 @@ export const PageLoja = withUser(withRouter(props => {
             <div className="p-col-3 p-ml-6 p-mt-6">
                 <h3>Insira Número da Figura</h3>
                 <InputNumber value={iditem} onValueChange={e => setIditem(e.value)} />              
-                <Button label="Comprar" className="p-col-7 p-ml-5 p-mt-4" icon="pi pi-dollar" onClick={verificaCash(item)}/>                               
+                <Button label="Comprar" className="p-col-7 p-ml-5 p-mt-4" icon="pi pi-dollar" onClick={handleSalvar}/>                               
             </div>
             
         </div>      
