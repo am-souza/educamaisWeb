@@ -5,8 +5,7 @@ import {DataView} from "primereact/dataview";
 import { InputNumber } from 'primereact/inputnumber';
 import { Button } from "primereact/button";
 import {buscar, excluir, json, salvar} from "../utilidades/Fetch";
-import { Messages } from 'primereact/messages';
-import { Message } from 'primereact/message';
+
 
 import img1 from "../img/avatar/1.png";
 import img2 from "../img/avatar/2.png";
@@ -76,45 +75,29 @@ const images = [
 
 export const PageLoja = withUser(withRouter(props => {
 
-    const [inventario, setInventario] = useState([]);
+    const [inventarios, setInventarios] = useState([]);
     const [iditem, setIditem] = useState([0]);
         
     useEffect(() => {
-        buscar(`/inventarios?usuario.id==${props.usuario.id}`).then(json).then(setInventario);
-    }, []); 
-
-    const item = images.filter(i => i.id === iditem);
+        buscar(`/inventarios?usuario.id==${props.usuario.id}`).then(json).then(setInventarios);
+    }, []);
   
-    function verificaCash(){
-        
-        if(item.some(i => i.preco <= props.usuario.cash)){
-
-            const add = {
-                id: item[0].id,
-                nome: (item[0].id).toString(),
-                valor: item[0].preco,
-            }
-           
-            console.log(add);
-            console.log(inventario);
-
-            inventario.filter(i => i.itens.push(add));           
-            console.log("Aprovado");
-         
+    function verificaCash() {
+        var itemSelecionado = images.filter(i => i.id === iditem)[0];
+        if(itemSelecionado.preco <= props.usuario.cash) {
+            inventarios[0].itens.push(itemSelecionado);
+            handleSalvar();
+        } else{
+            window.alert("Cash insuficiente");            
         }
-        else{
-            console.log("Cash insuficiente");            
-        }           
     }
 
-    const handleSalvar = () =>{ 
-        verificaCash();
-        console.log(inventario[0]);
-        salvar("/inventarios", inventario[0]).then(handleVoltar);        
+    const handleSalvar = () => {
+        salvar("/inventarios", inventarios[0]).then(handleVoltar);        
     }
+
     const handleVoltar = () => props.history.push("/loja");
    
-
     function itemTemplate(image) {
         return (
             <div className="p-col-3 imagem-template">
@@ -124,15 +107,17 @@ export const PageLoja = withUser(withRouter(props => {
             </div>
         );}   
 
+    const notOwned = images.filter(i => !inventarios[0]?.itens.some(v => v.id === i.id));
+
 	return (
         <div className="p-grid">
             <div className="p-col-8">
-                <DataView layout="grid" value={images} itemTemplate={itemTemplate}/>
+                <DataView layout="grid" value={notOwned} itemTemplate={itemTemplate}/>
             </div>
             <div className="p-col-3 p-ml-6 p-mt-6">
                 <h3>Insira Número da Figura</h3>
                 <InputNumber value={iditem} onValueChange={e => setIditem(e.value)} />              
-                <Button label="Comprar" className="p-col-7 p-ml-5 p-mt-4" icon="pi pi-dollar" onClick={handleSalvar}/>                               
+                <Button label="Comprar" className="p-col-7 p-ml-5 p-mt-4" icon="pi pi-dollar" onClick={verificaCash}/>                               
             </div>
             
         </div>      

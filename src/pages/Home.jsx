@@ -20,7 +20,10 @@ export const PageHome = withUser(withRouter((props) => {
 		buscar(`/turmas?alunos.id==${props.usuario.id}`).then(json).then(turmas => {
 			let data = moment().format("YYYY-MM-DDTHH:mm:ss");
 			buscar(`/avaliacoes?turma.id=in=(${turmas.map(t => t.id).join(",")});inicio=le=${data};fim=ge=${data}`).then(json).then(avaliacoes => {
-				setAvaliacoes(avaliacoes);
+				buscar(`/avaliacoesalunos?aluno.id==${props.usuario.id};avaliacao.id=in=(${avaliacoes.map(a => a.id).join(",")})`).then(json).then(respostas => {
+					avaliacoes = avaliacoes.filter(a => !respostas.some(r => r.avaliacao.id === a.id));
+					setAvaliacoes(avaliacoes);
+				})
 			});
 		});
 	}, [props.usuario.id]);
@@ -43,38 +46,3 @@ export const PageHome = withUser(withRouter((props) => {
 		
 	);
 }));
-/*
-export const AvaliacaoAluno = withRouter((props) => {
-
-	const  id  = props.match.params.id;
-
-	const [avaliacao, setAvaliacao] = useState([]);
-	
-	function newAvaliacao() {
-		return {
-			_key: Math.random(),
-			id: null,
-			atividade: null,
-			turma: null,
-			inicio: moment().format("YYYY-MM-DDTHH:mm:ss"),
-			fim: moment().format("YYYY-MM-DDTHH:mm:ss"),
-			valor:"",
-		};
-	}
-	
-
-	useEffect(() => id !== "0" && buscar(`/avaliacoes/${id}`).then(json).then(setAvaliacao), [id]);
-	
-	return (
-		<Panel header="Avaliação">
-			<PanelContent>
-				<div >
-					<InputText label="Valor da Avaliação" width={6} value={props.match.params.id} />					
-					<InputText label="Valor da Avaliação" width={6} value={id} />
-					<InputText label="Valor da Avaliação" width={6} value={avaliacao.atividade.id} />					
-				</div>
-			</PanelContent>			
-		</Panel>
-	);
-});
-*/
