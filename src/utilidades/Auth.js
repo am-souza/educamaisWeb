@@ -24,7 +24,7 @@ export function handleMenu(props) {
 	switch (props.usuario.perfil) {
 		case "ADMINISTRADOR":
 			cadastros.push({label: "Usuários", icon: "pi pi-fw pi-user", command: () => props.history.push("/usuarios")});
-			cadastros.push({label: "Cursos", icon: "pi pi-fw pi-book", command: () => props.history.push("/cursos")});
+			//cadastros.push({label: "Cursos", icon: "pi pi-fw pi-book", command: () => props.history.push("/cursos")});
 			// eslint-disable-next-line
 		case "TUTOR":
 			cadastros.push({label: "Avaliações", icon: "pi pi-fw pi-file", command: () => props.history.push("/avaliacoes")});

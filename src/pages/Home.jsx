@@ -18,16 +18,18 @@ export const PageHome = withUser(withRouter((props) => {
 	const [avaliacoesconcluidas, setAvalicoesconcluidas] = useState([]);
 	
 	useEffect(() => {
-		buscar(`/turmas?alunos.id==${props.usuario.id}`).then(json).then(turmas => {
-			let data = moment().format("YYYY-MM-DDTHH:mm:ss");
-			buscar(`/avaliacoes?turma.id=in=(${turmas.map(t => t.id).join(",")});inicio=le=${data};fim=ge=${data}`).then(json).then(avaliacoes => {
-				buscar(`/avaliacoesalunos?aluno.id==${props.usuario.id};avaliacao.id=in=(${avaliacoes.map(a => a.id).join(",")})`).then(json).then(respostas => {
-					avaliacoes = avaliacoes.filter(a => !respostas.some(r => r.avaliacao.id === a.id));
-					setAvaliacoes(avaliacoes);
-				})
+		if (props.usuario.perfil === "ALUNO"){
+			buscar(`/turmas?alunos.id==${props.usuario.id}`).then(json).then(turmas => {
+				let data = moment().format("YYYY-MM-DDTHH:mm:ss");
+				buscar(`/avaliacoes?turma.id=in=(${turmas.map(t => t.id).join(",")});inicio=le=${data};fim=ge=${data}`).then(json).then(avaliacoes => {
+					buscar(`/avaliacoesalunos?aluno.id==${props.usuario.id};avaliacao.id=in=(${avaliacoes.map(a => a.id).join(",")})`).then(json).then(respostas => {
+						avaliacoes = avaliacoes.filter(a => !respostas.some(r => r.avaliacao.id === a.id));
+						setAvaliacoes(avaliacoes);
+					})
+				});
 			});
-		});
-	}, [props.usuario.id]);
+		}	
+	}, [props.usuario.id]);			
 
 		buscar(`/avaliacoesalunos?aluno.id==${props.usuario.id}`).then(json).then(setAvalicoesconcluidas);
 
@@ -48,12 +50,8 @@ export const PageHome = withUser(withRouter((props) => {
 						<Column header="Turma" field="avaliacao.turma.nome"/>
 						<Column header="Nota" field="nota"/>
 					</DataTable>
-				</div>
-				
-			</div>		
-
-
-
+				</div>				
+			</div>	
 			<div className="p-col-3 p-mt-6 p-offset-1">	
 				<img src={avatar} alt="Sem Texto" width="250"/>	
 				<div className="p-text-center">Olá {props.usuario.nome}!<br/> Não se esqueça de fazer suas atividades e resgatar as recompensas</div>						
