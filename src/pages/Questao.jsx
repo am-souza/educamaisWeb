@@ -43,17 +43,24 @@ export const PageQuestao = withRouter((props) => {
 		props.history.push("/questoes/0");
 	}
 	function handleList() {
-		const query = [];
-		if (params.id?.length) query.push(`id=ik=${params.id}`);
-		if (params.texto?.length) query.push(`texto==${params.texto}`);
-		if (params.materia?.length) query.push(`materia==${params.materia}`);
-		buscar(`/questoes?${query.join(";")}`).then(json).then(setQuestoes);
+		const query = [];		
+		if (params.id) query.push(`id==${params.id}`);
+		if (params.texto?.length) query.push(`texto=ik=${params.texto}`);
+		if (params.materia?.length) query.push(`materia.nome=ik=${params.materia}`);
+		buscar(`/questoes?${query.join(";")}`).then(json).then(setQuestoes);		
 	}
+
+	useEffect(() => {
+		buscar(`/questoes`).then(json).then(setQuestoes);
+	},[]);
+
 	return (
 		<div>
 			<Panel header="Questões">
 				<PanelContent>
-					<InputText label="Nome" width={6} value={params.nome} onChange={e => setParams({...params, nome: e.target.value})}/>					
+					<InputText label="ID" width={1} value={params.id} onChange={e => setParams({...params, id: e.target.value})}/>					
+					<InputText label="Pergunta" width={6} value={params.texto} onChange={e => setParams({...params, texto: e.target.value})}/>					
+					<InputText label="Materia" width={7} value={params.materia} onChange={e => setParams({...params, materia: e.target.value})}/>					
 				</PanelContent>
 				<PanelFooter>
 					<Button label="Novo" className="p-button-warning" icon="pi pi-fw pi-plus" onClick={handleNew}/>
@@ -80,7 +87,7 @@ export const EditQuestao = withRouter((props) => {
 	const handleSalvar = () => salvar("/questoes", questao).then(handleVoltar);
 	const handleExcluir = () => excluir(`/questoes/${questao.id}`).then(handleVoltar);
 	return (
-		<Panel header="Questao">
+		<Panel header="Questão">
 			<PanelContent>
 				<InputText width={12} label="Pergunta" value={questao.texto} onChange={e => setQuestao({...questao, texto: e.target.value})}/>
 				<AutoComplete width={12} field="nome" suggestions={materias} completeMethod={handleAutoCompleteMateria} label="Matéria" value={questao.materia} onChange={e => setQuestao({...questao, materia: e.value})}/>

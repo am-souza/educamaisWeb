@@ -33,6 +33,7 @@ export function handleMenu(props) {
 			cadastros.push({label: "Questões", icon: "pi pi-fw pi-question", command: () => props.history.push("/questoes")});
 			//cadastros.push({label: "Respostas", icon: "pi pi-fw pi-list", command: () => props.history.push("/respostas")});
 			cadastros.push({label: "Matérias", icon: "pi pi-fw pi-inbox", command: () => props.history.push("/materias")});
+			cadastros.push({label: "Notas", icon: "pi pi-check-circle", command: () => props.history.push("/notas")});
 			// eslint-disable-next-line
 		case "ALUNO":			
 			cadastros.push({label: "Loja", icon: "pi pi-shopping-cart", command: () => props.history.push("/loja")});

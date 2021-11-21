@@ -40,34 +40,34 @@ import img30 from "../img/avatar/30.png";
 
 
 const images = [
-    {id: 1, picture: img1, preco: 20},
-    {id: 2, picture: img2, preco: 15},
-    {id: 3, picture: img3, preco: 30},
-    {id: 4, picture: img4, preco: 1000},
-    {id: 5, picture: img5, preco: 45},
-    {id: 6, picture: img6, preco: 60},
-    {id: 7, picture: img7, preco: 20},
-    {id: 8, picture: img8, preco: 20},
-    {id: 9, picture: img9, preco: 20},
-    {id: 10, picture: img10, preco: 20},
-    {id: 11, picture: img11, preco: 20},
-    {id: 12, picture: img12, preco: 20},
-    {id: 13, picture: img13, preco: 20},
-    {id: 14, picture: img14, preco: 20},
+    {id: 1, picture: img1, preco: 0},
+    {id: 2, picture: img2, preco: 2},
+    {id: 3, picture: img3, preco: 5},
+    {id: 4, picture: img4, preco: 5},
+    {id: 5, picture: img5, preco: 1},
+    {id: 6, picture: img6, preco: 10},
+    {id: 7, picture: img7, preco: 10},
+    {id: 8, picture: img8, preco: 10},
+    {id: 9, picture: img9, preco: 15},
+    {id: 10, picture: img10, preco: 15},
+    {id: 11, picture: img11, preco: 15},
+    {id: 12, picture: img12, preco: 15},
+    {id: 13, picture: img13, preco: 15},
+    {id: 14, picture: img14, preco: 15},
    // {id: 15, picture: img15, preco: 20},
     {id: 16, picture: img16, preco: 20},
     {id: 17, picture: img17, preco: 20},
-    {id: 18, picture: img18, preco: 20},
-    {id: 19, picture: img19, preco: 20},
-    {id: 20, picture: img20, preco: 20},
-    {id: 21, picture: img21, preco: 20},
-    {id: 22, picture: img22, preco: 20},
-    {id: 23, picture: img23, preco: 20},
-    {id: 24, picture: img24, preco: 20},
-    {id: 25, picture: img25, preco: 20},
-    {id: 26, picture: img26, preco: 20},
-    {id: 27, picture: img27, preco: 20},
-    {id: 28, picture: img28, preco: 20},
+    {id: 18, picture: img18, preco: 10},
+    {id: 19, picture: img19, preco: 10},
+    {id: 20, picture: img20, preco: 10},
+    {id: 21, picture: img21, preco: 10},
+    {id: 22, picture: img22, preco: 10},
+    {id: 23, picture: img23, preco: 10},
+    {id: 24, picture: img24, preco: 15},
+    {id: 25, picture: img25, preco: 10},
+    {id: 26, picture: img26, preco: 15},
+    {id: 27, picture: img27, preco: 10},
+    {id: 28, picture: img28, preco: 5},
     {id: 29, picture: img29, preco: 20},
     {id: 30, picture: img30, preco: 20},
 
@@ -76,15 +76,16 @@ const images = [
 export const PageLoja = withUser(withRouter(props => {
 
     const [inventarios, setInventarios] = useState([]);
-    const [iditem, setIditem] = useState([0]);
+    const [iditem, setIditem] = useState(1);
         
     useEffect(() => {
         buscar(`/inventarios?usuario.id==${props.usuario.id}`).then(json).then(setInventarios);
     }, []);
   
     function verificaCash() {
-        var itemSelecionado = images.filter(i => i.id === iditem)[0];
-        if(itemSelecionado.preco <= props.usuario.cash) {
+        console.log(iditem);
+        var itemSelecionado = images.filter(i => i.id === iditem)[0]; 
+        if((itemSelecionado.preco <= props.usuario.cash)&&(itemSelecionado.preco!=0)){
             inventarios[0].itens.push(itemSelecionado);
             handleSalvar();
         } else{
@@ -93,7 +94,8 @@ export const PageLoja = withUser(withRouter(props => {
     }
 
     const handleSalvar = () => {
-        salvar("/inventarios", inventarios[0]).then(handleVoltar);        
+        salvar("/inventarios", inventarios[0]).then(handleVoltar); 
+        window.location.reload();       
     }
 
     const handleVoltar = () => props.history.push("/loja");

@@ -28,23 +28,32 @@ function newAvaliacao() {
 export const PageAvaliacao = withRouter((props) => {
 	const [avaliacoes, setAvaliacoes] = useState([]);
 	const [params, setParams] = useState({
-		identif: "",
-		texto: "",		
+		id: "",
+		turma: "",		
+		atividade: "",		
 	});
 	function handleNew() {
 		props.history.push("/avaliacoes/0");
 	}
 	function handleList() {
 		const query = [];
-		if (params.identif?.length) query.push(`id=ik=${params.identif}`);
-		if (params.texto?.length) query.push(`texto==${params.texto}`);
-		buscar(`/avaliacoes?${query.join(";")}`).then(json).then(setAvaliacoes);
+		if (params.id) query.push(`id==${params.id}`);
+		if (params.turma?.length) query.push(`turma.nome=ik=${params.turma}`);
+		if (params.atividade?.length) query.push(`atividade.nome=ik=${params.atividade}`);
+		buscar(`/avaliacoes?${query.join(";")}`).then(json).then(setAvaliacoes);		
 	}
+
+	useEffect(() => {
+		buscar(`/avaliacoes`).then(json).then(setAvaliacoes);
+	},[]);
+
 	return (
 		<div>
 			<Panel header="Avaliações">
 				<PanelContent>
-					<InputText label="ID" width={6} value={params.identif} onChange={e => setParams({...params, identif: e.target.value})}/>					
+					<InputText label="ID" width={1} value={params.id} onChange={e => setParams({...params, id: e.target.value})}/>					
+					<InputText label="Turma" width={6} value={params.turma} onChange={e => setParams({...params, turma: e.target.value})}/>					
+					<InputText label="Atividade" width={7} value={params.atividade} onChange={e => setParams({...params, atividade: e.target.value})}/>					
 				</PanelContent>
 				<PanelFooter>
 					<Button label="Novo" className="p-button-warning" icon="pi pi-fw pi-plus" onClick={handleNew}/>

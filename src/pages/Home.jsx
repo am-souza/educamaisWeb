@@ -8,14 +8,11 @@ import { useEffect } from "react/cjs/react.development";
 import {buscar} from "../utilidades/Fetch";
 import moment from "moment";
 import {json} from "../utilidades/Fetch";
-import {PanelContent} from "../components/PanelContent";
-import {InputText} from "../components/InputText";
-import {Panel} from "primereact/panel";
 
 export const PageHome = withUser(withRouter((props) => {
 
 	const [avaliacoes, setAvaliacoes] = useState([]);
-	const [avaliacoesconcluidas, setAvalicoesconcluidas] = useState([]);
+	const [avaliacoesconcluidas, setAvalicoesconcluidas] = useState([]);	
 	
 	useEffect(() => {
 		if (props.usuario.perfil === "ALUNO"){
@@ -29,11 +26,11 @@ export const PageHome = withUser(withRouter((props) => {
 				});
 			});
 		}	
-	}, [props.usuario.id]);			
+	}, [props.usuario.id]);		
 
 		buscar(`/avaliacoesalunos?aluno.id==${props.usuario.id}`).then(json).then(setAvalicoesconcluidas);
 
-	return (
+	return (		
 		<div className="p-grid">			
 			<div className="p-col-7"><div className="p-mb-3 p-text-center p-text-bold">ATIVIDADES PENDENTES</div>
 				<DataTable emptyMessage="Nenhum registro encontrado" value={avaliacoes} onRowDoubleClick={e => props.history.push(`/avaliacaoaluno/${avaliacoes[e.index].id}`)}>

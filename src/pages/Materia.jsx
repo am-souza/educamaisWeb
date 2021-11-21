@@ -22,14 +22,21 @@ export const PageMateria = withRouter((props) => {
 		props.history.push("/materias/0");
 	}
 	function handleList() {
-		const query = [];		
+		const query = [];	
+		if (params.id) query.push(`id==${params.id}`);			
 		if (params.nome?.length) query.push(`nome=ik=${params.nome}`);
 		buscar(`/materias?${query.join(";")}`).then(json).then(setMaterias);
 	}
+	
+	useEffect(() => {
+		buscar(`/materias`).then(json).then(setMaterias);
+	},[]);
+
 	return (
 		<div>
 			<Panel header="Materias">
 				<PanelContent>
+					<InputText label="ID" width={1} value={params.id} onChange={e => setParams({...params, id: e.target.value})}/>					
 					<InputText label="Nome" width={6} value={params.nome} onChange={e => setParams({...params, nome: e.target.value})}/>					
 				</PanelContent>
 				<PanelFooter>

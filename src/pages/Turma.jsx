@@ -26,6 +26,7 @@ const Turma_Periodo = [
 export const PageTurma = withRouter((props) => {
 	const [turmas, setTurmas] = useState([]);
 	const [params, setParams] = useState({
+		id:"",
 		nome: "",
 		periodo: "",
 		numero: "",
@@ -37,14 +38,25 @@ export const PageTurma = withRouter((props) => {
 	}
 	function handleList() {
 		const query = [];		
+		if (params.id) query.push(`id==${params.id}`);
 		if (params.nome?.length) query.push(`nome=ik=${params.nome}`);
+		if (params.materia?.length) query.push(`materia.nome=ik=${params.materia}`);
+		if (params.tutor?.length) query.push(`tutor.nome=ik=${params.tutor}`);
 		buscar(`/turmas?${query.join(";")}`).then(json).then(setTurmas);		
 	}
+
+	useEffect(() => {
+		buscar(`/turmas`).then(json).then(setTurmas);
+	},[]);
+
 	return (
 		<div>
 			<Panel header="Turmas">
 				<PanelContent>
+					<InputText label="ID" width={1} value={params.id} onChange={e => setParams({...params, id: e.target.value})}/>					
 					<InputText label="Nome" width={6} value={params.nome} onChange={e => setParams({...params, nome: e.target.value})}/>					
+					<InputText label="Tutor" width={5} value={params.tutor} onChange={e => setParams({...params, tutor: e.target.value})}/>					
+					<InputText label="Matéria" width={7} value={params.materia} onChange={e => setParams({...params, materia: e.target.value})}/>					
 				</PanelContent>
 				<PanelFooter>
 					<Button label="Novo" className="p-button-warning" icon="pi pi-fw pi-plus" onClick={handleNew}/>
@@ -53,10 +65,10 @@ export const PageTurma = withRouter((props) => {
 			</Panel>
 			<Spacer/>
 			<DataTable emptyMessage="Nenhum registro encontrado" value={turmas} onRowDoubleClick={e => props.history.push(`/turmas/${turmas[e.index].id}`)}>
-				<Column header="ID" field="id"/>
+				<Column className="p-col-1" header="ID" field="id"/>
 				<Column header="Nome" field="nome"/>
 				<Column className="p-col-2" header="Período" field="periodo"/>
-				<Column className="p-col-2" header="Número" field="numeroTurma"/>
+				<Column className="p-col-1" header="Número" field="numeroTurma"/>
 				<Column header="Matéria" body={t => t.materia?.nome}/>
 				<Column header="Tutor" body={t => t.tutor?.nome}/>
 			</DataTable>

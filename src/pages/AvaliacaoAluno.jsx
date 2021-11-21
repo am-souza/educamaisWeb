@@ -53,6 +53,7 @@ export const PageAvaliacaoAluno = withUser(withRouter(props => {
 	function handleSave() {
 		salvar("/avaliacoesalunos", avaliacao).then(json).then(avaliacaoAluno => {
 			props.history.push("/");
+			window.location.reload();
 		});
 	}
 

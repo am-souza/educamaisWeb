@@ -35,12 +35,17 @@ export const PageAtividade = withRouter((props) => {
 		if (params.nome?.length) query.push(`nome=ik=${params.nome}`);
 		buscar(`/atividades?${query.join(";")}`).then(json).then(setAtividades);
 	}
+
+	useEffect(() => {
+		buscar(`/atividades`).then(json).then(setAtividades);
+	},[]);
+
 	return (
 		<div>
 			<Panel header="Atividades">
 				<PanelContent>
-					<InputText label="ID" width={4} value={params.id} onChange={e => setParams({...params, id: e.target.value})}/>
-					<InputText label="Nome" width={8} value={params.nome} onChange={e => setParams({...params, nome: e.target.value})}/>
+					<InputText label="ID" width={1} value={params.id} onChange={e => setParams({...params, id: e.target.value})}/>
+					<InputText label="Nome" width={7} value={params.nome} onChange={e => setParams({...params, nome: e.target.value})}/>
 				</PanelContent>
 				<PanelFooter>
 					<Button label="Novo" className="p-button-warning" icon="pi pi-fw pi-plus" onClick={handleNew}/>

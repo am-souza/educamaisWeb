@@ -57,6 +57,12 @@ export const PageUsuario = withRouter((props) => {
 		if (params.perfil?.length) query.push(`perfil==${params.perfil}`);
 		buscar(`/usuarios?${query.join(";")}`).then(json).then(setUsuarios);
 	}
+
+	useEffect(() => {
+		buscar(`/usuarios`).then(json).then(setUsuarios);
+	},[]);
+
+
 	return (
 		<div>
 			<Panel header="Usuários">
