@@ -1,6 +1,6 @@
 import {Panel} from "primereact/panel";
 import {DataTable} from "primereact/datatable";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useRef} from "react";
 import {Column} from "primereact/column/column.cjs";
 import {Spacer} from "../components/Spacer";
 import {buscar, excluir, json, salvar} from "../utilidades/Fetch";
@@ -62,7 +62,6 @@ export const PageUsuario = withRouter((props) => {
 		buscar(`/usuarios`).then(json).then(setUsuarios);
 	},[]);
 
-
 	return (
 		<div>
 			<Panel header="Usuários">
@@ -96,7 +95,9 @@ export const EditUsuario = withRouter((props) => {
 	useEffect(() => id !== "0" && buscar(`/usuarios/${id}`).then(json).then(setUsuario), [id]);	
 	const handleVoltar = () => props.history.push("/usuarios");
 	const handleSalvar = () => salvar("/usuarios", usuario).then(handleVoltar);		
-	const handleExcluir = () => excluir(`/usuarios/${usuario.id}`).then(handleVoltar);	
+	const handleExcluir = () => excluir(`/usuarios/${usuario.id}`).then(handleVoltar);	   
+
+	
 	return (
 		<Panel header="Usuário">
 			<PanelContent>

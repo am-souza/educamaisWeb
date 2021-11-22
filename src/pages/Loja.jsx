@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useRef} from "react";
 import {withRouter} from "react-router-dom";
 import {withUser} from "../utilidades/Auth";
 import {DataView} from "primereact/dataview";
 import { InputNumber } from 'primereact/inputnumber';
 import { Button } from "primereact/button";
 import {buscar, excluir, json, salvar} from "../utilidades/Fetch";
+import { Toast } from 'primereact/toast';
 
 
 import img1 from "../img/avatar/1.png";
@@ -73,8 +74,9 @@ const images = [
 
 ];
 
-export const PageLoja = withUser(withRouter(props => {
 
+export const PageLoja = withUser(withRouter(props => {
+   
     const [inventarios, setInventarios] = useState([]);
     const [iditem, setIditem] = useState(1);
         
@@ -82,23 +84,24 @@ export const PageLoja = withUser(withRouter(props => {
         buscar(`/inventarios?usuario.id==${props.usuario.id}`).then(json).then(setInventarios);
     }, []);
   
-    function verificaCash() {
+    function verificaCash() {              
         console.log(iditem);
-        var itemSelecionado = images.filter(i => i.id === iditem)[0]; 
-        if((itemSelecionado.preco <= props.usuario.cash)&&(itemSelecionado.preco!=0)){
+        var itemSelecionado = images.filter(i => i.id === iditem)[0];         
+        if(itemSelecionado.preco <= props.usuario.cash){           
             inventarios[0].itens.push(itemSelecionado);
-            handleSalvar();
+            showConfirm();
+            //handleSalvar();
         } else{
             window.alert("Cash insuficiente");            
         }
     }
 
-    const handleSalvar = () => {
+    const handleSalvar = () => {         
         salvar("/inventarios", inventarios[0]).then(handleVoltar); 
         window.location.reload();       
     }
 
-    const handleVoltar = () => props.history.push("/loja");
+    const handleVoltar = () => window.location.reload();
    
     function itemTemplate(image) {
         return (
@@ -109,19 +112,41 @@ export const PageLoja = withUser(withRouter(props => {
             </div>
         );}   
 
-    const notOwned = images.filter(i => !inventarios[0]?.itens.some(v => v.id === i.id));
+    const notOwned = images.filter(i => !inventarios[0]?.itens.some(v => v.id === i.id));        
+    
+    const toastBC = useRef();  
 
-	return (
+    const showConfirm = () => {
+        toastBC.current.show({ severity: 'warn', sticky: true, content: (
+            <div className="p-flex p-flex-column" style={{flex: '1'}}>
+                <div className="p-text-center">
+                    <i className="pi pi-exclamation-triangle" style={{fontSize: '3rem'}}></i>
+                    <h4>Confirmar compra do item: {iditem}?</h4>                                       
+                </div>
+                <div className="p-grid p-fluid">
+                    <div className="p-col-6">
+                        <Button type="button" label="Sim" className="p-button-success" onClick={handleSalvar}/>
+                    </div>
+                    <div className="p-col-6">
+                        <Button type="button" label="Não" className="p-button-secondary" onClick={handleVoltar}/>
+                    </div>
+                </div>
+            </div>
+        ) });
+    }   
+    
+
+   	return (
         <div className="p-grid">
+            <Toast ref={toastBC} position="bottom-center" />
             <div className="p-col-8">
                 <DataView layout="grid" value={notOwned} itemTemplate={itemTemplate}/>
             </div>
             <div className="p-col-3 p-ml-6 p-mt-6">
                 <h3>Insira Número da Figura</h3>
                 <InputNumber value={iditem} onValueChange={e => setIditem(e.value)} />              
-                <Button label="Comprar" className="p-col-7 p-ml-5 p-mt-4" icon="pi pi-dollar" onClick={verificaCash}/>                               
-            </div>
-            
+                <Button label="Comprar" className="p-col-7 p-ml-5 p-mt-4" icon="pi pi-dollar" onClick={verificaCash}/>                                              
+            </div>            
         </div>      
 
     );       
