@@ -24,15 +24,17 @@ export function handleMenu(props) {
 	switch (props.usuario.perfil) {
 		case "ADMINISTRADOR":
 			cadastros.push({label: "Usuários", icon: "pi pi-fw pi-user", command: () => props.history.push("/usuarios")});
+			cadastros.push({label: "Matérias", icon: "pi pi-fw pi-inbox", command: () => props.history.push("/materias")});
+			cadastros.push({label: "Turmas", icon: "pi pi-fw pi-users", command: () => props.history.push("/turmas")});
 			//cadastros.push({label: "Cursos", icon: "pi pi-fw pi-book", command: () => props.history.push("/cursos")});
 			// eslint-disable-next-line
 		case "TUTOR":
 			cadastros.push({label: "Avaliações", icon: "pi pi-fw pi-file", command: () => props.history.push("/avaliacoes")});
-			cadastros.push({label: "Turmas", icon: "pi pi-fw pi-users", command: () => props.history.push("/turmas")});
+			//cadastros.push({label: "Turmas", icon: "pi pi-fw pi-users", command: () => props.history.push("/turmas")});
 			cadastros.push({label: "Atividades", icon: "pi pi-fw pi-clone", command: () => props.history.push("/atividades")});
 			cadastros.push({label: "Questões", icon: "pi pi-fw pi-question", command: () => props.history.push("/questoes")});
 			//cadastros.push({label: "Respostas", icon: "pi pi-fw pi-list", command: () => props.history.push("/respostas")});
-			cadastros.push({label: "Matérias", icon: "pi pi-fw pi-inbox", command: () => props.history.push("/materias")});
+			//cadastros.push({label: "Matérias", icon: "pi pi-fw pi-inbox", command: () => props.history.push("/materias")});
 			cadastros.push({label: "Notas", icon: "pi pi-check-circle", command: () => props.history.push("/notas")});
 			// eslint-disable-next-line
 		case "ALUNO":			
