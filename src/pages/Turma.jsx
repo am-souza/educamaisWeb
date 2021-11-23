@@ -1,6 +1,6 @@
 import {Panel} from "primereact/panel";
 import {DataTable} from "primereact/datatable";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useRef} from "react";
 import {Column} from "primereact/column/column.cjs";
 import {Spacer} from "../components/Spacer";
 import {buscar, excluir, json, salvar} from "../utilidades/Fetch";
@@ -14,6 +14,7 @@ import {Dropdown} from "../components/Dropdown";
 import {InputNumber} from "../components/InputNumber";
 import {Calendar} from "../components/Calendar";
 import {TabPanel, TabView} from "primereact/tabview";
+import { Toast } from 'primereact/toast';
 
 const Turma_Periodo = [
 	{label: "Nenhum", value: null},
@@ -95,8 +96,34 @@ export const EditTurma = withRouter((props) => {
 	const handleAutoCompleteTutor = (e) => buscar(`/usuarios?perfil==TUTOR;nome=ik=${e.query}`).then(json).then(setTutores);
 	const handleAutoCompleteMateria = (e) => buscar(`/materias?nome=ik=${e.query}`).then(json).then(setMaterias);
 	const handleAutoCompleteAluno = (e) => buscar(`/usuarios?id=out=(${turma.alunos.map(q => q.id).join(",") || "0"});perfil==ALUNO;nome=ik=${e.query}`).then(json).then(setAlunos);
+	
+	const handleCancelar = () => toastBC.current.clear();
+	const toastBC = useRef();  
+
+    const showConfirm = () => {
+        toastBC.current.show({ severity: 'warn', sticky: true, content: (
+            <div className="p-flex p-flex-column" style={{flex: '1'}}>
+                <div className="p-text-center">
+                    <i className="pi pi-exclamation-triangle" style={{fontSize: '3rem'}}></i>
+                    <h4>Deseja realmente excluir?</h4>                                       
+                </div>
+                <div className="p-grid p-fluid">
+                    <div className="p-col-6">
+                        <Button type="button" label="Sim" className="p-button-success" onClick={handleExcluir}/>
+                    </div>
+                    <div className="p-col-6">
+                        <Button type="button" label="Não" className="p-button-secondary" onClick={handleCancelar}/>
+                    </div>
+                </div>
+            </div>
+        ) });
+    } 
+	
+	
+	
 	return (
 		<Panel header="Turma">
+			<Toast ref={toastBC} position="bottom-center" />
 			<TabView>
 				<TabPanel header="Configuração Geral">
 					<PanelContent>
@@ -133,7 +160,7 @@ export const EditTurma = withRouter((props) => {
 			<PanelFooter>
 				<Button label="Salvar" icon="pi pi-fw pi-save" className="p-button-success" onClick={handleSalvar}/>
 				<Button label="Voltar" icon="pi pi-fw pi-undo" className="p-button-secondary" onClick={handleVoltar}/>
-				<Button label="Excluir" icon="pi pi-fw pi-trash" className="p-button-danger" onClick={handleExcluir}/>
+				<Button label="Excluir" icon="pi pi-fw pi-trash" className="p-button-danger" onClick={showConfirm}/>
 			</PanelFooter>
 		</Panel>
 	);

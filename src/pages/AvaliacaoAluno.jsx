@@ -1,5 +1,5 @@
 import {Panel} from "primereact/panel";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useRef} from "react";
 import {buscar, json, salvar} from "../utilidades/Fetch";
 import {PanelContent} from "../components/PanelContent";
 import {withRouter} from "react-router-dom";
@@ -7,6 +7,7 @@ import {Checkbox} from "primereact/checkbox";
 import {withUser} from "../utilidades/Auth";
 import {PanelFooter} from "../components/PanelFooter";
 import {Button} from "primereact/button";
+import { Toast } from 'primereact/toast';
 
 export const PageAvaliacaoAluno = withUser(withRouter(props => {
 	const id = props.match.params.id;
@@ -57,15 +58,39 @@ export const PageAvaliacaoAluno = withUser(withRouter(props => {
 		});
 	}
 
+	const handleVoltar = () => toastBC.current.clear();
+
+	const toastBC = useRef(); 
+
+    const showConfirm = () => {
+        toastBC.current.show({ severity: 'warn', sticky: true, content: (
+            <div className="p-flex p-flex-column" style={{flex: '1'}}>
+                <div className="p-text-center">
+                    <i className="pi pi-exclamation-triangle" style={{fontSize: '3rem'}}></i>
+                    <h4>Confirmar compra do item?</h4>                                       
+                </div>
+                <div className="p-grid p-fluid">
+                    <div className="p-col-6">
+                        <Button type="button" label="Sim" className="p-button-success" onClick={handleSave}/>
+                    </div>
+                    <div className="p-col-6">
+                        <Button type="button" label="Não" className="p-button-secondary" onClick={handleVoltar}/>
+                    </div>
+                </div>
+            </div>
+        ) });
+    }  
+
 	return (
 		<Panel header="Prova">
+			<Toast ref={toastBC} position="bottom-center" />
 			<PanelContent>	
 				<div>					
 					{avaliacao.avaliacao?.atividade.questoes.map(printQuestao)}							
 				</div>			
 			</PanelContent>
 			<PanelFooter>
-				<Button icon="pi pi-save" label="Concluir" onClick={handleSave}/>
+				<Button icon="pi pi-save" label="Concluir" onClick={showConfirm}/>
 			</PanelFooter>
 		</Panel>
 	);

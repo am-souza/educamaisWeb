@@ -11,6 +11,7 @@ import {Button} from "primereact/button";
 import {PanelFooter} from "../components/PanelFooter";
 import {Dropdown} from "../components/Dropdown";
 import { InputNumber } from "../components/InputNumber";
+import { Toast } from 'primereact/toast';
 
 const Usuario_Perfil = [
 	{label: "Nenhum", value: null},
@@ -96,10 +97,33 @@ export const EditUsuario = withRouter((props) => {
 	const handleVoltar = () => props.history.push("/usuarios");
 	const handleSalvar = () => salvar("/usuarios", usuario).then(handleVoltar);		
 	const handleExcluir = () => excluir(`/usuarios/${usuario.id}`).then(handleVoltar);	   
+	const handleCancelar = () => toastBC.current.clear();
+
+	const toastBC = useRef();  
+
+    const showConfirm = () => {
+        toastBC.current.show({ severity: 'warn', sticky: true, content: (
+            <div className="p-flex p-flex-column" style={{flex: '1'}}>
+                <div className="p-text-center">
+                    <i className="pi pi-exclamation-triangle" style={{fontSize: '3rem'}}></i>
+                    <h4>Deseja realmente excluir?</h4>                                       
+                </div>
+                <div className="p-grid p-fluid">
+                    <div className="p-col-6">
+                        <Button type="button" label="Sim" className="p-button-success" onClick={handleExcluir}/>
+                    </div>
+                    <div className="p-col-6">
+                        <Button type="button" label="Não" className="p-button-secondary" onClick={handleCancelar}/>
+                    </div>
+                </div>
+            </div>
+        ) });
+    } 
 
 	
 	return (
 		<Panel header="Usuário">
+			<Toast ref={toastBC} position="bottom-center" />
 			<PanelContent>
 				<InputText width={6} label="Login" value={usuario.username} onChange={e => setUsuario({...usuario, username: e.target.value})}/>
 				<InputText type="password" width={6} label="Senha" value={usuario.password} onChange={e => setUsuario({...usuario, password: e.target.value})}/>
@@ -112,7 +136,7 @@ export const EditUsuario = withRouter((props) => {
 			<PanelFooter>
 				<Button label="Salvar" icon="pi pi-fw pi-save" className="p-button-success" onClick={handleSalvar}/>
 				<Button label="Voltar" icon="pi pi-fw pi-undo" className="p-button-secondary" onClick={handleVoltar}/>
-				<Button label="Excluir" icon="pi pi-fw pi-trash" className="p-button-danger" onClick={handleExcluir}/>
+				<Button label="Excluir" icon="pi pi-fw pi-trash" className="p-button-danger" onClick={showConfirm}/>
 			</PanelFooter>
 		</Panel>
 	);

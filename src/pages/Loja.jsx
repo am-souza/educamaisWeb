@@ -45,7 +45,7 @@ const images = [
     {id: 2, picture: img2, preco: 2},
     {id: 3, picture: img3, preco: 5},
     {id: 4, picture: img4, preco: 5},
-    {id: 5, picture: img5, preco: 1},
+    {id: 5, picture: img5, preco: 10},
     {id: 6, picture: img6, preco: 10},
     {id: 7, picture: img7, preco: 10},
     {id: 8, picture: img8, preco: 10},
@@ -101,7 +101,7 @@ export const PageLoja = withUser(withRouter(props => {
         window.location.reload();       
     }
 
-    const handleVoltar = () => window.location.reload();
+    const handleVoltar = () =>  toastBC.current.clear();
    
     function itemTemplate(image) {
         return (

@@ -1,6 +1,6 @@
 import {Panel} from "primereact/panel";
 import {DataTable} from "primereact/datatable";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useRef} from "react";
 import {Column} from "primereact/column";
 import {Spacer} from "../components/Spacer";
 import {buscar, excluir, json, salvar} from "../utilidades/Fetch";
@@ -11,6 +11,7 @@ import {Button} from "primereact/button";
 import {PanelFooter} from "../components/PanelFooter";
 import {TabPanel, TabView} from "primereact/tabview";
 import {AutoComplete} from "../components/AutoComplete";
+import { Toast } from 'primereact/toast';
 
 function newAtividade() {
 	return {
@@ -70,8 +71,32 @@ export const EditAtividade = withRouter((props) => {
 	const handleSalvar = () => salvar("/atividades", atividade).then(handleVoltar);
 	const handleExcluir = () => excluir(`/atividades/${atividade.id}`).then(handleVoltar);
 	const handleAutoCompleteQuestao = (e) => buscar(`/questoes?id=out=(${atividade.questoes.map(q => q.id).join(",") || "0"});texto=ik=${e.query}`).then(json).then(setQuestoes);
+
+	const handleCancelar = () => toastBC.current.clear();
+	const toastBC = useRef();  
+
+    const showConfirm = () => {
+        toastBC.current.show({ severity: 'warn', sticky: true, content: (
+            <div className="p-flex p-flex-column" style={{flex: '1'}}>
+                <div className="p-text-center">
+                    <i className="pi pi-exclamation-triangle" style={{fontSize: '3rem'}}></i>
+                    <h4>Desja realmente excluir?</h4>                                       
+                </div>
+                <div className="p-grid p-fluid">
+                    <div className="p-col-6">
+                        <Button type="button" label="Sim" className="p-button-success" onClick={handleExcluir}/>
+                    </div>
+                    <div className="p-col-6">
+                        <Button type="button" label="Não" className="p-button-secondary" onClick={handleCancelar}/>
+                    </div>
+                </div>
+            </div>
+        ) });
+    } 
+
 	return (
 		<Panel header="Atividade">
+			<Toast ref={toastBC} position="bottom-center" />
 			<TabView>
 				<TabPanel header="Dados Principais">
 					<PanelContent>
@@ -103,7 +128,7 @@ export const EditAtividade = withRouter((props) => {
 			<PanelFooter>
 				<Button label="Salvar" icon="pi pi-fw pi-save" className="p-button-success" onClick={handleSalvar}/>
 				<Button label="Voltar" icon="pi pi-fw pi-undo" className="p-button-secondary" onClick={handleVoltar}/>
-				<Button label="Excluir" icon="pi pi-fw pi-trash" className="p-button-danger" onClick={handleExcluir}/>
+				<Button label="Excluir" icon="pi pi-fw pi-trash" className="p-button-danger" onClick={showConfirm}/>
 			</PanelFooter>
 		</Panel>
 	);

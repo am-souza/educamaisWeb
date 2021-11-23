@@ -1,6 +1,6 @@
 import {Panel} from "primereact/panel";
 import {DataTable} from "primereact/datatable";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useRef} from "react";
 import {Column} from "primereact/column/column.cjs";
 import {Spacer} from "../components/Spacer";
 import {buscar, excluir, json, salvar} from "../utilidades/Fetch";
@@ -12,6 +12,7 @@ import {PanelFooter} from "../components/PanelFooter";
 import {Checkbox} from "primereact/checkbox";
 import {byKeyOrId} from "../utilidades/FilterUtils";
 import {AutoComplete} from "../components/AutoComplete";
+import { Toast } from 'primereact/toast';
 
 export function newQuestao() {
 	return {
@@ -86,8 +87,33 @@ export const EditQuestao = withRouter((props) => {
 	const handleVoltar = () => props.history.push("/questoes");
 	const handleSalvar = () => salvar("/questoes", questao).then(handleVoltar);
 	const handleExcluir = () => excluir(`/questoes/${questao.id}`).then(handleVoltar);
+	
+	const handleCancelar = () => toastBC.current.clear();
+	const toastBC = useRef();  
+
+    const showConfirm = () => {
+        toastBC.current.show({ severity: 'warn', sticky: true, content: (
+            <div className="p-flex p-flex-column" style={{flex: '1'}}>
+                <div className="p-text-center">
+                    <i className="pi pi-exclamation-triangle" style={{fontSize: '3rem'}}></i>
+                    <h4>Deseja realmente excluir?</h4>                                       
+                </div>
+                <div className="p-grid p-fluid">
+                    <div className="p-col-6">
+                        <Button type="button" label="Sim" className="p-button-success" onClick={handleExcluir}/>
+                    </div>
+                    <div className="p-col-6">
+                        <Button type="button" label="Não" className="p-button-secondary" onClick={handleCancelar}/>
+                    </div>
+                </div>
+            </div>
+        ) });
+    } 
+	
+	
 	return (
 		<Panel header="Questão">
+			<Toast ref={toastBC} position="bottom-center" />
 			<PanelContent>
 				<InputText width={12} label="Pergunta" value={questao.texto} onChange={e => setQuestao({...questao, texto: e.target.value})}/>
 				<AutoComplete width={12} field="nome" suggestions={materias} completeMethod={handleAutoCompleteMateria} label="Matéria" value={questao.materia} onChange={e => setQuestao({...questao, materia: e.value})}/>
@@ -116,7 +142,7 @@ export const EditQuestao = withRouter((props) => {
 			<PanelFooter>
 				<Button label="Salvar" icon="pi pi-fw pi-save" className="p-button-success" onClick={handleSalvar}/>
 				<Button label="Voltar" icon="pi pi-fw pi-undo" className="p-button-secondary" onClick={handleVoltar}/>
-				<Button label="Excluir" icon="pi pi-fw pi-trash" className="p-button-danger" onClick={handleExcluir}/>
+				<Button label="Excluir" icon="pi pi-fw pi-trash" className="p-button-danger" onClick={showConfirm}/>
 			</PanelFooter>
 		</Panel>
 	);
