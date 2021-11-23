@@ -6,6 +6,7 @@ import { InputNumber } from 'primereact/inputnumber';
 import { Button } from "primereact/button";
 import {buscar, excluir, json, salvar} from "../utilidades/Fetch";
 import { Toast } from 'primereact/toast';
+import { Tag } from 'primereact/tag';
 
 
 import img1 from "../img/avatar/1.png";
@@ -85,7 +86,7 @@ export const PageLoja = withUser(withRouter(props => {
     }, []);
   
     function verificaCash() {              
-        console.log(iditem);
+        //console.log(iditem);
         var itemSelecionado = images.filter(i => i.id === iditem)[0];         
         if(itemSelecionado.preco <= props.usuario.cash){           
             inventarios[0].itens.push(itemSelecionado);
@@ -101,16 +102,23 @@ export const PageLoja = withUser(withRouter(props => {
         window.location.reload();       
     }
 
-    const handleVoltar = () =>  toastBC.current.clear();
-   
+    const handleVoltar = () =>  {    
+        window.location.reload(PageLoja);        
+    }
+
     function itemTemplate(image) {
-        return (
-            <div className="p-col-3 imagem-template">
-                <div><h4>Número Figurinha: {image.id}</h4></div>
-                <div><img className="imagem-loja" src={image.picture} alt=""/></div>
-                <div><h4>Cash: {image.preco}</h4></div>               
+        return (               
+            <div className="p-col-3 imagem-template">                
+                <Tag className="texto-figura" icon="pi pi-image" severity="success" rounded={true}>
+                    <h4>Figurinha: {image.id}</h4>
+                </Tag>
+                <br></br> 
+                <div><img className="imagem-loja" src={image.picture} alt="Figura não encontrada"/></div>               
+                <div>
+                    <Tag className="texto-cash" value={image.preco} rounded={true} icon="pi pi-dollar" severity="info"></Tag>                                
+                </div>                
             </div>
-        );}   
+        );} 
 
     const notOwned = images.filter(i => !inventarios[0]?.itens.some(v => v.id === i.id));        
     
@@ -143,9 +151,9 @@ export const PageLoja = withUser(withRouter(props => {
                 <DataView layout="grid" value={notOwned} itemTemplate={itemTemplate}/>
             </div>
             <div className="p-col-3 p-ml-6 p-mt-6">
-                <h3>Insira Número da Figura</h3>
+                <Tag className="texto-compra" value="Insira número da figurinha" rounded={true} icon="pi pi-image" severity="info"></Tag>                
                 <InputNumber value={iditem} onValueChange={e => setIditem(e.value)} />              
-                <Button label="Comprar" className="p-col-7 p-ml-5 p-mt-4" icon="pi pi-dollar" onClick={verificaCash}/>                                              
+                <Button label="Comprar" className="p-col-7 p-ml-5 p-mt-4 p-button-rounded" icon="pi pi-dollar" onClick={verificaCash}/>                                              
             </div>            
         </div>      
 

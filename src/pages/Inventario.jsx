@@ -3,6 +3,7 @@ import {withRouter} from "react-router-dom";
 import {DataView} from "primereact/dataview";
 import {withUser} from "../utilidades/Auth";
 import {buscar, excluir, json, salvar} from "../utilidades/Fetch";
+import { Tag } from 'primereact/tag';
 
 import img1 from "../img/avatar/1.png";
 import img2 from "../img/avatar/2.png";
@@ -79,8 +80,12 @@ export const PageInventario = withUser(withRouter((props) => {
 
 	function itemTemplate(image) {
         return (		
-			<div className="p-col-2 imagem-template">
-				<div>{image.id}</div>				
+			<div className="p-col-2 imagem-template">		
+            <div>
+                <Tag className="texto-figura-inventario" icon="pi pi-image" severity="success" rounded={true}>
+                    <h4>{image.id}</h4>
+                </Tag>			
+            </div>			
                 <Image src={image.picture} preview={true} width="150" height="150" template={<i className="pi pi-search-plus"></i>} alt="Figurinha não encontrada" />
 			</div>			
         );

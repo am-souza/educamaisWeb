@@ -14,11 +14,43 @@
 	height: 96px;
 }
 
-.imagem-template {
+.texto-cash {
+	margin-left: 22px;
+	width: 75px;
+	height: 35px;
+}
+
+.texto-figura {	
+	width: 120px;
+	height: 40px;
+}
+
+.texto-figura-inventario{
+	width: 50px;
+	height: 50px;	
+}
+
+.texto-compra {	
+	width: 200px;
+	height: 60px;
+	margin-bottom: 15px;
+}
+
+.texto-atividade{	
+	width: 400px;
+	height: 40px;
+	margin-bottom: 15px;
+	margin-left: 25%;
+}
+
+.imagem-template {	
 	padding: 10px;
+	margin-bottom: 15px;
 	img {
+		margin-left: 12px;
 		border: 1px solid rgba(0, 0, 0, .2);
 		padding: 10px;
 		border-radius: 10px;
-	}
+		margin-top: 5px;
+	}	
 }

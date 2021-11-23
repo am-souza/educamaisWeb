@@ -67,7 +67,7 @@ export const PageAvaliacaoAluno = withUser(withRouter(props => {
             <div className="p-flex p-flex-column" style={{flex: '1'}}>
                 <div className="p-text-center">
                     <i className="pi pi-exclamation-triangle" style={{fontSize: '3rem'}}></i>
-                    <h4>Confirmar compra do item?</h4>                                       
+                    <h4>Confirmar Respostas?</h4>                                       
                 </div>
                 <div className="p-grid p-fluid">
                     <div className="p-col-6">

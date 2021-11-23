@@ -8,6 +8,7 @@ import { useEffect } from "react/cjs/react.development";
 import {buscar} from "../utilidades/Fetch";
 import moment from "moment";
 import {json} from "../utilidades/Fetch";
+import { Tag } from 'primereact/tag';
 
 export const PageHome = withUser(withRouter((props) => {
 
@@ -32,7 +33,10 @@ export const PageHome = withUser(withRouter((props) => {
 
 	return (		
 		<div className="p-grid">			
-			<div className="p-col-7"><div className="p-mb-3 p-text-center p-text-bold">ATIVIDADES PENDENTES</div>
+			<div className="p-col-7">
+				<Tag className="texto-atividade" icon="pi pi-clock" severity="warning" rounded={true}>
+                   	<h4>ATIVIDADES PENDENTES</h4>
+                </Tag>
 				<DataTable emptyMessage="Nenhum registro encontrado" value={avaliacoes} onRowDoubleClick={e => props.history.push(`/avaliacaoaluno/${avaliacoes[e.index].id}`)}>
 					<Column header="Atividade" field="atividade.nome"/> 								
 					<Column header="Turma" field="turma.nome"/>
@@ -40,8 +44,10 @@ export const PageHome = withUser(withRouter((props) => {
 					<Column header="Fim" body={a => moment(a.fim).format("DD/MM/YYYY HH:mm")}/>
 				</DataTable>
 				
-				<div className="p-mt-6">
-					<div className="p-mb-3 p-text-center p-text-bold">ATIVIDADES CONCLUÍDAS</div>
+				<div className="p-mt-6">					
+					<Tag className="texto-atividade" icon="pi pi-check-circle" severity="success" rounded={true}>
+                    	<h4>ATIVIDADES CONCLUÍDAS</h4>
+                	</Tag>
 					<DataTable emptyMessage="Nenhum registro encontrado" value={avaliacoesconcluidas}>
 						<Column header="Avaliação" field="avaliacao.atividade.nome"/> 								
 						<Column header="Turma" field="avaliacao.turma.nome"/>
@@ -51,7 +57,11 @@ export const PageHome = withUser(withRouter((props) => {
 			</div>	
 			<div className="p-col-3 p-mt-6 p-offset-1">	
 				<img src={avatar} alt="Sem Texto" width="250"/>	
-				<div className="p-text-center">Olá {props.usuario.nome}!<br/> Não se esqueça de fazer suas atividades e resgatar as recompensas</div>						
+										
+				<Tag className="" severity="info" rounded={true}>
+					<i className="pi pi-comment" style={{'fontSize': '2em', 'margin-left': '85%'}}></i>
+					<div className="p-text-center">Olá {props.usuario.nome}!<br/> Não se esqueça de fazer suas atividades e resgatar as recompensas</div>
+                </Tag>
 			</div>
 		</div>
 		
